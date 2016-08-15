@@ -10,8 +10,8 @@ namespace PachowStudios.Framework.Camera
 
     Vector3 GetFinalCameraPosition(Bounds targetBounds, Vector3 currentCameraPosition, Vector3 desiredCameraPosition);
 
-    #if UNITY_EDITOR
+#if UNITY_EDITOR
     void OnDrawGizmosInternal(Vector3 basePosition);
-    #endif
+#endif
   }
 }

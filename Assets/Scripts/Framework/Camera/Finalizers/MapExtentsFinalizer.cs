@@ -51,7 +51,7 @@ namespace PachowStudios.Framework.Camera.Finalizers
       return desiredCameraPosition;
     }
 
-    #if UNITY_EDITOR
+#if UNITY_EDITOR
     public void OnDrawGizmosInternal(Vector3 basePosition)
     {
       const int FakeInfinity = 10000;
@@ -75,6 +75,6 @@ namespace PachowStudios.Framework.Camera.Finalizers
           new Vector2(this.leftConstraint, -FakeInfinity),
           new Vector2(this.leftConstraint, FakeInfinity));
     }
-    #endif
+#endif
   }
 }

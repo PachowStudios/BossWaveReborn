@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Linq.Extensions;
 using PachowStudios.Framework.Collections;
@@ -155,7 +156,7 @@ namespace PachowStudios.Framework.Camera
       }
     }
 
-#if UNITY_EDITOR
+    [Conditional("UNITY_EDITOR")]
     private void OnDrawGizmos()
     {
       if (Camera == null)
@@ -182,7 +183,6 @@ namespace PachowStudios.Framework.Camera
         positionInFrontOfCamera + new Vector3(-lineWidth, this.platformSnapVerticalOffset, 1f),
         positionInFrontOfCamera + new Vector3(lineWidth, this.platformSnapVerticalOffset, 1f));
     }
-#endif
 
     private Vector3 GetNormalizedCameraPosition()
       => Camera.ViewportToWorldPoint(new Vector3(0.5f + this.horizontalOffset, 0.5f + this.verticalOffset, 0f));

@@ -61,7 +61,7 @@ namespace PachowStudios.Framework.Camera.Behaviours
       return desiredOffset;
     }
 
-    #if UNITY_EDITOR
+#if UNITY_EDITOR
     public void OnDrawGizmosInternal(Vector3 basePosition)
     {
       Gizmos.color = new Color(0f, 0.4f, 0.8f);
@@ -80,6 +80,6 @@ namespace PachowStudios.Framework.Camera.Behaviours
           basePosition + new Vector3(-lineWidth, 0f, 1f),
           basePosition + new Vector3(lineWidth, 0f, 1f));
     }
-    #endif
+#endif
   }
 }

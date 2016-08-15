@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Diagnostics;
+using UnityEngine;
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -23,7 +24,7 @@ namespace PachowStudios.Framework.Camera.Effectors
 
     private float OuterRingRadius => CircleTrigger.radius;
 
-    #if UNITY_EDITOR
+    [Conditional("UNITY_EDITOR")]
     private void OnDrawGizmosSelected()
     {
       Handles.color = Color.green;
@@ -36,7 +37,6 @@ namespace PachowStudios.Framework.Camera.Effectors
 
       Handles.PositionHandle(EffectorPosition, Quaternion.identity);
     }
-    #endif
 
     public override float GetEffectorWeight()
     {
