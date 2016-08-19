@@ -71,11 +71,10 @@ namespace PachowStudios.Framework.Camera
 
       // we use the transform.position plus the offset when passing the base position to our camera behaviours
       var basePosition = GetNormalizedCameraPosition();
-      var accumulatedDeltaOffset =
-        this.behaviours
-          .Where(b => b.IsEnabled)
-          .Select(b => b.GetDesiredPositionDelta(targetBounds, basePosition, targetAvgVelocity))
-          .Aggregate(Vector3.zero, (current, desired) => current + desired);
+      var accumulatedDeltaOffset = this.behaviours
+        .Where(b => b.IsEnabled)
+        .Select(b => b.GetDesiredPositionDelta(targetBounds, basePosition, targetAvgVelocity))
+        .Aggregate(Vector3.zero, (current, desired) => current + desired);
 
       if (this.enablePlatformSnap)
       {
@@ -184,21 +183,6 @@ namespace PachowStudios.Framework.Camera
         positionInFrontOfCamera + new Vector3(lineWidth, this.platformSnapVerticalOffset, 1f));
     }
 
-    private Vector3 GetNormalizedCameraPosition()
-      => Camera.ViewportToWorldPoint(new Vector3(0.5f + this.horizontalOffset, 0.5f + this.verticalOffset, 0f));
-
-    private Vector3 LerpTowards(Vector3 from, Vector3 to, float remainingFactorPerSecond)
-      => Vector3.Lerp(from, to, 1f - Mathf.Pow(remainingFactorPerSecond, Time.deltaTime));
-
-    private Vector3 FastSpring(Vector3 currentValue, Vector3 targetValue)
-    {
-      this.cameraVelocity += (-2.0f * Time.deltaTime * this.springDampingRatio * this.springAngularFrequency * this.cameraVelocity)
-                             + (Time.deltaTime * this.springAngularFrequency * this.springAngularFrequency * (targetValue - currentValue));
-      currentValue += Time.deltaTime * this.cameraVelocity;
-
-      return currentValue;
-    }
-
     public void AddCameraBehavior(ICameraBehaviour behaviour)
       => this.behaviours.Add(behaviour);
 
@@ -226,5 +210,20 @@ namespace PachowStudios.Framework.Camera
 
     public void RemoveCameraFinalizer(ICameraFinalizer cameraFinalizer)
       => this.finalizers.RemoveAll(f => f == cameraFinalizer);
+
+    private static Vector3 LerpTowards(Vector3 from, Vector3 to, float remainingFactorPerSecond)
+      => Vector3.Lerp(from, to, 1f - Mathf.Pow(remainingFactorPerSecond, Time.deltaTime));
+
+    private Vector3 FastSpring(Vector3 currentValue, Vector3 targetValue)
+    {
+      this.cameraVelocity += (-2.0f * Time.deltaTime * this.springDampingRatio * this.springAngularFrequency * this.cameraVelocity)
+                             + (Time.deltaTime * this.springAngularFrequency * this.springAngularFrequency * (targetValue - currentValue));
+      currentValue += Time.deltaTime * this.cameraVelocity;
+
+      return currentValue;
+    }
+
+    private Vector3 GetNormalizedCameraPosition()
+      => Camera.ViewportToWorldPoint(new Vector3(0.5f + this.horizontalOffset, 0.5f + this.verticalOffset, 0f));
   }
 }

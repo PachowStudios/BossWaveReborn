@@ -17,8 +17,7 @@ namespace PachowStudios.Framework.Camera.Finalizers
     [SerializeField] private float rightConstraint = 0f;
     [SerializeField] private float leftConstraint = 0f;
 
-    [Inject]
-    private CameraController CameraController { get; set; }
+    [Inject] private CameraController CameraController { get; set; }
 
     public bool IsEnabled => enabled;
     public int GetFinalizerPriority => 0;

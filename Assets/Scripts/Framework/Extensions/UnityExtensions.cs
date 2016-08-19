@@ -60,13 +60,13 @@ namespace UnityEngine
       => monoBehaviour.gameObject.Destroy();
 
     public static void Destroy([NotNull] this GameObject gameObject)
-      => Object.Destroy(gameObject);
+      => UnityObject.Destroy(gameObject);
 
     public static void DestroyAfter([NotNull] this MonoBehaviour monoBehaviour, float delay)
       => monoBehaviour.gameObject.DestroyAfter(delay);
 
     public static void DestroyAfter([NotNull] this GameObject gameObject, float delay)
-      => Object.Destroy(gameObject, delay);
+      => UnityObject.Destroy(gameObject, delay);
 
     [NotNull]
     public static GameObject HideInHierarchy([NotNull] this GameObject gameObject)

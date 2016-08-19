@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using JetBrains.Annotations;
 using PachowStudios.Framework.Assertions;
 using UnityEngine;
+using Zenject;
 
 namespace PachowStudios.Framework.Animation
 {
@@ -25,7 +26,7 @@ namespace PachowStudios.Framework.Animation
       return this;
     }
 
-    public void Update()
+    public void Tick()
     {
       foreach (var condition in this.conditions)
         this.animator.SetBool(condition.Name, condition.IsConditionSatisfied);

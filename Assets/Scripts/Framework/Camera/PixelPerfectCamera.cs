@@ -7,12 +7,9 @@ namespace PachowStudios.Framework.Camera
   [ExecuteInEditMode, AddComponentMenu("Pachow Studios/Camera/Pixel Perfect Camera")]
   public sealed class PixelPerfectCamera : MonoBehaviour
   {
-    [SerializeField]
-    private int referenceWidth = 256;
-    [SerializeField]
-    private int pixelsPerUnit = 16;
-    [SerializeField]
-    private GameObject uiRoot = null;
+    [SerializeField] private int referenceWidth = 256;
+    [SerializeField] private int pixelsPerUnit = 16;
+    [SerializeField] private GameObject uiRoot = null;
 
     private UnityCamera cameraComponent;
     private RectTransform uiTransformComponent;
