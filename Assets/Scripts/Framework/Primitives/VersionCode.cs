@@ -8,23 +8,18 @@ using System.Xml.Serialization;
 using JetBrains.Annotations;
 using PachowStudios.Framework.Assertions;
 
-namespace PachowStudios.Framework
+namespace PachowStudios.Framework.Primitives
 {
   [Serializable]
   [TypeConverter(typeof(VersionCodeConverter))]
   public class VersionCode : ICloneable, IComparable<VersionCode>, IEquatable<VersionCode>
   {
-    [XmlIgnore]
-    public int Major { get; private set; }
-    [XmlIgnore]
-    public int Minor { get; private set; }
-    [XmlIgnore]
-    public int Build { get; private set; } = -1;
-    [XmlIgnore]
-    public int Revision { get; private set; } = -1;
+    [XmlIgnore] public int Major { get; private set; }
+    [XmlIgnore] public int Minor { get; private set; }
+    [XmlIgnore] public int Build { get; private set; } = -1;
+    [XmlIgnore] public int Revision { get; private set; } = -1;
 
-    [XmlAttribute]
-    public string Value
+    [XmlAttribute] public string Value
     {
       get { return ToString(); }
       private set { Parse(value); }
@@ -55,9 +50,9 @@ namespace PachowStudios.Framework
 
     public int CompareTo(VersionCode version) 
       => Major != version.Major ? Major.CompareTo(version.Major)
-           : Minor != version.Minor ? Minor.CompareTo(version.Minor)
-               : Build != version.Build ? Build.CompareTo(version.Build)
-                   : Revision.CompareTo(version.Revision);
+        : Minor != version.Minor ? Minor.CompareTo(version.Minor)
+          : Build != version.Build ? Build.CompareTo(version.Build)
+            : Revision.CompareTo(version.Revision);
 
     public override bool Equals(object obj)
       => obj is VersionCode && Equals((VersionCode)obj);

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using JetBrains.Annotations;
 
-namespace PachowStudios.Framework
+namespace PachowStudios.Framework.Primitives
 {
   public class Lazy<T>
     where T : class
@@ -25,7 +25,7 @@ namespace PachowStudios.Framework
 
     private T CreateValue()
       => this.valueFactory?.Invoke()
-      ?? Activator.CreateInstance<T>();
+         ?? Activator.CreateInstance<T>();
 
     public static implicit operator T([NotNull] Lazy<T> @this)
       => @this.Value;
@@ -34,8 +34,8 @@ namespace PachowStudios.Framework
   public static class Lazy
   {
     [NotNull, Pure]
-    public static Lazy<T> From<T>([NotNull] Func<T> func)
+    public static Primitives.Lazy<T> From<T>([NotNull] Func<T> func)
       where T : class
-      => new Lazy<T>(func);
+      => new Primitives.Lazy<T>(func);
   }
 }

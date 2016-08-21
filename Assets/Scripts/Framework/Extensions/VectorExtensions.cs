@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using JetBrains.Annotations;
 
 namespace UnityEngine
@@ -138,6 +140,30 @@ namespace UnityEngine
       var angle = Mathf.Atan2(vector.y, vector.x) * Mathf.Rad2Deg;
 
       return Quaternion.AngleAxis(angle, Vector3.forward);
+    }
+
+    [Pure]
+    public static Vector2 Sum([NotNull, InstantHandle] this IEnumerable<Vector2> vectors)
+      => vectors.Aggregate(Vector2.zero, (c, v) => c + v);
+
+    [Pure]
+    public static Vector3 Sum([NotNull, InstantHandle] this IEnumerable<Vector3> vectors)
+      => vectors.Aggregate(Vector3.zero, (c, v) => c + v);
+
+    [Pure]
+    public static Vector2 Average([NotNull, InstantHandle] this IEnumerable<Vector2> vectors)
+    {
+      var vectorArray = vectors as Vector2[] ?? vectors.ToArray();
+
+      return vectorArray.Sum() / vectorArray.Length;
+    }
+
+    [Pure]
+    public static Vector3 Average([NotNull, InstantHandle] this IEnumerable<Vector3> vectors)
+    {
+      var vectorArray = vectors as Vector3[] ?? vectors.ToArray();
+
+      return vectorArray.Sum() / vectorArray.Length;
     }
   }
 }

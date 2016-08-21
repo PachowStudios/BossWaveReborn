@@ -3,7 +3,7 @@ using System.Collections;
 using JetBrains.Annotations;
 using UnityEngine;
 
-namespace PachowStudios.Framework
+namespace PachowStudios.Framework.Primitives
 {
   public static class Wait
   {

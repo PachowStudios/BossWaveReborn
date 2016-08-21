@@ -1,6 +1,6 @@
 ﻿using System;
 using JetBrains.Annotations;
-using PachowStudios.Framework;
+using PachowStudios.Framework.Primitives;
 using UnityObject = UnityEngine.Object;
 
 namespace UnityEngine

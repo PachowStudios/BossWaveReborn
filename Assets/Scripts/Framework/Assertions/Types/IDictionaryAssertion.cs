@@ -11,5 +11,8 @@ namespace PachowStudios.Framework.Assertions
 
     public AndConstraint<IDictionaryAssertion<TKey, TValue>> ContainKey(TKey key, string reason = null)
       => Assert(Subject.ContainsKey(key), "contain key", key.ToString(), reason);
+
+    public AndConstraint<IDictionaryAssertion<TKey, TValue>> NotContainKey(TKey key, string reason = null)
+      => Assert(!Subject.ContainsKey(key), "not contain key", key.ToString(), reason);
   }
 }

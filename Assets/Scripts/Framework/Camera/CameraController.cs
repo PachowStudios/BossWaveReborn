@@ -39,7 +39,7 @@ namespace PachowStudios.Framework.Camera
     private readonly List<ICameraEffector> effectors = new List<ICameraEffector>(3);
     private readonly List<ICameraFinalizer> finalizers = new List<ICameraFinalizer>(1);
 
-    private readonly FixedSizedVector3Queue averageVelocityQueue = new FixedSizedVector3Queue(10);
+    private readonly FixedQueue<Vector3> averageVelocityQueue = new FixedQueue<Vector3>(10);
     private Vector3 targetPositionLastFrame;
     private Vector3 cameraVelocity;
 
@@ -63,7 +63,7 @@ namespace PachowStudios.Framework.Camera
       // we keep track of the target's velocity since some camera behaviours need to know about it
       var velocity = (targetBounds.center - this.targetPositionLastFrame) / Time.deltaTime;
       velocity.z = 0f;
-      this.averageVelocityQueue.Push(velocity);
+      this.averageVelocityQueue.Enqueue(velocity);
       this.targetPositionLastFrame = targetBounds.center;
 
       // fetch the average velocity for use in our camera behaviours

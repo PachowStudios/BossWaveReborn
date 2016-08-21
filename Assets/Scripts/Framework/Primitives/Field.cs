@@ -1,6 +1,6 @@
-﻿using JetBrains.Annotations;
+using JetBrains.Annotations;
 
-namespace PachowStudios.Framework
+namespace PachowStudios.Framework.Primitives
 {
   public class Field<T>
     where T : struct
