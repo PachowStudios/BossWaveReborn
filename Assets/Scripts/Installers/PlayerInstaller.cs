@@ -23,6 +23,7 @@ namespace PachowStudios.BossWave.Installers
     {
       Container.BindInstance(MovementController).WhenInjectedInto<PlayerModel>();
       Container.BindInstance(Renderers).WhenInjectedInto<PlayerModel>();
+      Container.Bind<PlayerModel>().AsSingle();
 
       Container.BindInstance(Animator).WhenInjectedInto<IAnimationController>();
       Container.BindAllInterfaces<AnimationController>().To<AnimationController>().AsSingle();

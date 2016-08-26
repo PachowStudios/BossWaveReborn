@@ -14,7 +14,8 @@ namespace UnityEngine
     [Pure, ContractAnnotation("null => true")]
     public static bool IsNull([CanBeNull] this object @object)
       // ReSharper disable once MergeSequentialChecks
-      => @object == null || !(@object is UnityObject);
+      // ReSharper disable once TryCastAndCheckForNull.0
+      => @object == null || @object as UnityObject == null;
 
     /// <summary>
     /// Converts Unity's fake null to a real null.
@@ -25,9 +26,9 @@ namespace UnityEngine
       => unityObject.IsNull() ? null : unityObject;
 
     [CanBeNull]
-    public static T GetComponentIfNull<T>([NotNull] this Component component, [CanBeNull] ref T target)
+    public static T GetComponentIfNull<T>([CanBeNull] this Component component, [CanBeNull] ref T target)
       where T : class
-      => component.gameObject.GetComponentIfNull(ref target);
+      => component.NullToRealNull()?.gameObject.GetComponentIfNull(ref target);
 
     [CanBeNull]
     public static T GetComponentIfNull<T>([CanBeNull] this GameObject gameObject, [CanBeNull] ref T target)
