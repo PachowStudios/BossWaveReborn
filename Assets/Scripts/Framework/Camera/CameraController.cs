@@ -3,6 +3,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Linq.Extensions;
 using PachowStudios.Framework.Collections;
+using PachowStudios.Framework.Movement;
 using UnityEngine;
 using UnityCamera = UnityEngine.Camera;
 
@@ -44,8 +45,12 @@ namespace PachowStudios.Framework.Camera
     private Vector3 cameraVelocity;
 
     private UnityCamera controlledCamera;
+    private IGroundable groundableTargetComponent;
 
     public UnityCamera Camera => this.GetComponentIfNull(ref this.controlledCamera);
+
+    private IGroundable GroundableTarget => this.GetComponentIfNull(ref this.groundableTargetComponent);
+    private bool IsTargetGrounded => GroundableTarget?.IsGrounded ?? false;
 
     private void Awake()
     {
@@ -76,7 +81,7 @@ namespace PachowStudios.Framework.Camera
         .Select(b => b.GetDesiredPositionDelta(targetBounds, basePosition, targetAvgVelocity))
         .Aggregate(Vector3.zero, (current, desired) => current + desired);
 
-      if (this.enablePlatformSnap)
+      if (this.enablePlatformSnap && IsTargetGrounded)
       {
         // when exclusive, no base behaviours can mess with y
         if (this.isPlatformSnapExclusiveWhenEnabled)

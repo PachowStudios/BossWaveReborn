@@ -12,49 +12,60 @@ namespace UnityEngine
     /// The object must be cast to a Unity Object as a hint to the compiler.
     /// </summary>
     [Pure, ContractAnnotation("null => true")]
-    public static bool IsNull([CanBeNull] this object unityObject)
-      => (UnityObject)unityObject == null;
+    public static bool IsNull([CanBeNull] this object @object)
+      // ReSharper disable once MergeSequentialChecks
+      => @object == null || !(@object is UnityObject);
 
     /// <summary>
     /// Converts Unity's fake null to a real null.
     /// </summary>
     [Pure, ContractAnnotation("null => null")]
     public static T NullToRealNull<T>([CanBeNull] this T unityObject)
-      where T : UnityObject
+      where T : class
       => unityObject.IsNull() ? null : unityObject;
 
     [CanBeNull]
     public static T GetComponentIfNull<T>([NotNull] this Component component, [CanBeNull] ref T target)
-      where T : Component
+      where T : class
       => component.gameObject.GetComponentIfNull(ref target);
 
     [CanBeNull]
     public static T GetComponentIfNull<T>([CanBeNull] this GameObject gameObject, [CanBeNull] ref T target)
-      where T : Component
+      where T : class
       => target.NullToRealNull()
          ?? (target = gameObject.NullToRealNull()?.GetComponent<T>().NullToRealNull());
 
     [CanBeNull]
     public static T GetComponentInParentIfNull<T>([CanBeNull] this Component component, [CanBeNull] ref T target)
-      where T : Component
+      where T : class
       => component.NullToRealNull()?.gameObject.GetComponentInParentIfNull(ref target);
 
     [CanBeNull]
     public static T GetComponentInParentIfNull<T>([CanBeNull] this GameObject gameObject, [CanBeNull] ref T target)
-      where T : Component
+      where T : class
       => target.NullToRealNull()
          ?? (target = gameObject.NullToRealNull()?.GetComponentInParent<T>().NullToRealNull());
 
     [CanBeNull]
     public static T GetComponentInChildrenIfNull<T>([CanBeNull] this Component component, [CanBeNull] ref T target)
-      where T : Component
+      where T : class
       => component.NullToRealNull()?.gameObject.GetComponentInChildrenIfNull(ref target);
 
     [CanBeNull]
     public static T GetComponentInChildrenIfNull<T>([CanBeNull] this GameObject gameObject, [CanBeNull] ref T target)
-      where T : Component
+      where T : class
       => target.NullToRealNull()
          ?? (target = gameObject.NullToRealNull()?.GetComponentInChildren<T>().NullToRealNull());
+
+    [CanBeNull]
+    public static T[] GetComponentsInChildrenIfNull<T>([CanBeNull] this Component component, [CanBeNull] ref T[] target)
+      where T : class
+      => component.NullToRealNull()?.gameObject.GetComponentsInChildrenIfNull(ref target);
+
+    [CanBeNull]
+    public static T[] GetComponentsInChildrenIfNull<T>([CanBeNull] this GameObject gameObject, [CanBeNull] ref T[] target)
+      where T : class
+      => target ?? (target = gameObject.NullToRealNull()?.GetComponentsInChildren<T>());
 
     public static void Destroy([NotNull] this MonoBehaviour monoBehaviour)
       => monoBehaviour.gameObject.Destroy();

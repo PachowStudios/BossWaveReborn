@@ -1,7 +1,7 @@
 ﻿using System.Diagnostics;
 using PachowStudios.Framework.Assertions;
 using PachowStudios.Framework.Attributes;
-using PachowStudios.Framework.Character;
+using PachowStudios.Framework.Movement;
 using UnityEngine;
 using Zenject;
 

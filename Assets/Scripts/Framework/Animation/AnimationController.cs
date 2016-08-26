@@ -4,34 +4,32 @@ using JetBrains.Annotations;
 using PachowStudios.Framework.Assertions;
 using PachowStudios.Framework.Primitives;
 using UnityEngine;
+using Zenject;
 
 namespace PachowStudios.Framework.Animation
 {
-  public class AnimationController
+  public class AnimationController : IAnimationController, ITickable
   {
     private readonly List<IAnimationParameter> parameters = new List<IAnimationParameter>();
     private readonly Animator animator;
-    private readonly TypeSwitch animatorSwitch;
+    private readonly TypeSwitch parameterSwitch;
 
     public AnimationController([NotNull] Animator animator)
     {
       this.animator = animator;
-      this.animatorSwitch = new TypeSwitch()
+      this.parameterSwitch = new TypeSwitch()
         .Case<AnimationParameter<bool>>(p => this.animator.SetBool(p.Name, p.Value))
         .Case<AnimationParameter<int>>(p => this.animator.SetInteger(p.Name, p.Value))
         .Case<AnimationParameter<float>>(p => this.animator.SetFloat(p.Name, p.Value));
     }
 
-    [NotNull]
-    public AnimationController Add([NotNull] string name, [NotNull] Func<bool> getter)
+    public AnimationController Add(string name, Func<bool> getter)
       => Add<bool>(name, getter);
 
-    [NotNull]
-    public AnimationController Add([NotNull] string name, [NotNull] Func<int> getter)
+    public AnimationController Add(string name, Func<int> getter)
       => Add<int>(name, getter);
 
-    [NotNull]
-    public AnimationController Add([NotNull] string name, [NotNull] Func<float> getter)
+    public AnimationController Add(string name, Func<float> getter)
       => Add<float>(name, getter);
 
     [NotNull]
@@ -43,10 +41,10 @@ namespace PachowStudios.Framework.Animation
       return this;
     }
 
-    public void Trigger([NotNull] string name)
+    public void Trigger(string name)
       => this.animator.SetTrigger(name);
 
     public void Tick()
-      => this.parameters.ForEach(this.animatorSwitch.Switch);
+      => this.parameters.ForEach(this.parameterSwitch.Switch);
   }
 }

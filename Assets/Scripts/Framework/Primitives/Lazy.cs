@@ -1,6 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using JetBrains.Annotations;
+using UnityEngine;
 
 namespace PachowStudios.Framework.Primitives
 {
@@ -11,12 +11,12 @@ namespace PachowStudios.Framework.Primitives
 
     private T value;
 
-    // This null check is done with EqualityComparer<T>
-    // because MonoBehavior's custom null check doesn't work
-    // with unconstrained generics...
     [NotNull] public T Value => HasValue ? this.value : (this.value = CreateValue());
 
-    private bool HasValue => !EqualityComparer<T>.Default.Equals(this.value, default(T));
+    // This null check is done with our IsNull extension
+    // because MonoBehavior's custom null check doesn't work
+    // with unconstrained generics...
+    private bool HasValue => !this.value.IsNull();
 
     public Lazy(Func<T> valueFactory = null)
     {
@@ -34,8 +34,8 @@ namespace PachowStudios.Framework.Primitives
   public static class Lazy
   {
     [NotNull, Pure]
-    public static Primitives.Lazy<T> From<T>([NotNull] Func<T> func)
+    public static Lazy<T> From<T>([NotNull] Func<T> func)
       where T : class
-      => new Primitives.Lazy<T>(func);
+      => new Lazy<T>(func);
   }
 }
