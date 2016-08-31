@@ -1,14 +1,14 @@
-﻿using JetBrains.Annotations;
+using JetBrains.Annotations;
 
 namespace PachowStudios.Framework.Messaging
 {
   public partial class EventAggregator
   {
-    private interface IWeakEventHandler
+    private interface IHandler
     {
       bool IsAlive { get; }
 
-      bool Handle<TMessage>([NotNull] TMessage message)
+      void Handle<TMessage>([NotNull] TMessage message)
         where TMessage : IMessage;
 
       [Pure]
@@ -16,8 +16,8 @@ namespace PachowStudios.Framework.Messaging
         where TMessage : IMessage;
 
       [Pure]
-      bool RefersTo<T>(T instance)
-        where T : class, IHandles;
+      bool RefersTo<T>([NotNull] T instance)
+        where T : class, IHandle;
     }
   }
 }

@@ -70,8 +70,6 @@ namespace PachowStudios.Framework.Movement
       set { Transform.position = value; }
     }
 
-    public Vector3 Velocity { get; private set; }
-
     public Vector3 CenterPoint => BoxCollider.bounds.center;
     public bool IsGrounded => this.collisionState.Below;
     public bool WasGroundedLastFrame => this.collisionState.WasGroundedLastFrame;
@@ -91,10 +89,12 @@ namespace PachowStudios.Framework.Movement
     private static void DrawRay(Vector3 start, Vector3 dir, Color color)
       => Debug.DrawRay(start, dir, color);
 
-    public Vector3 Move(Vector3 deltaMovement)
+    public Vector2 Move(Vector2 deltaMovement)
     {
       if (Time.deltaTime <= 0f || Time.timeScale <= 0.01f)
-        return Vector3.zero;
+        return deltaMovement;
+
+      deltaMovement *= Time.deltaTime;
 
       this.collisionState.WasGroundedLastFrame = this.collisionState.Below;
       this.collisionState.Reset();
@@ -114,27 +114,18 @@ namespace PachowStudios.Framework.Movement
 
       Transform.Translate(deltaMovement, Space.World);
 
-      if (Time.deltaTime > 0)
-        Velocity = deltaMovement / Time.deltaTime;
+      deltaMovement /= Time.deltaTime;
 
       if (!this.collisionState.WasGroundedLastFrame && this.collisionState.Below)
         this.collisionState.BecameGroundedThisFrame = true;
 
       if (this.isGoingUpSlope)
-        Velocity = Velocity.Set(y: 0f);
+        deltaMovement = deltaMovement.Set(y: 0f);
 
       if (ControllerCollided != null)
-        this.raycastHitsThisFrame.ForEach(ControllerCollided.Invoke);
+        this.raycastHitsThisFrame.ForEach(ControllerCollided);
 
-      return Velocity;
-    }
-
-    public void WarpToGrounded()
-    {
-      do
-      {
-        Move(Vector3.down);
-      } while (!IsGrounded);
+      return deltaMovement;
     }
 
     private void RecalculateDistanceBetweenRays()
@@ -158,7 +149,7 @@ namespace PachowStudios.Framework.Movement
       this.raycastOrigins.BottomLeft = modifiedBounds.min;
     }
 
-    private void MoveHorizontally(ref Vector3 deltaMovement)
+    private void MoveHorizontally(ref Vector2 deltaMovement)
     {
       var isGoingRight = deltaMovement.x > 0;
       var rayDistance = deltaMovement.x.Abs() + this.skinWidth;
@@ -208,7 +199,7 @@ namespace PachowStudios.Framework.Movement
       }
     }
 
-    private bool HandleHorizontalSlope(ref Vector3 deltaMovement, float angle)
+    private bool HandleHorizontalSlope(ref Vector2 deltaMovement, float angle)
     {
       if (angle.RoundToInt() == 90)
         return false;
@@ -232,7 +223,7 @@ namespace PachowStudios.Framework.Movement
       return true;
     }
 
-    private void MoveVertically(ref Vector3 deltaMovement)
+    private void MoveVertically(ref Vector2 deltaMovement)
     {
       var isGoingUp = deltaMovement.y > 0;
       var rayDistance = deltaMovement.y.Abs() + this.skinWidth;
@@ -282,7 +273,7 @@ namespace PachowStudios.Framework.Movement
       }
     }
 
-    private void HandleVerticalSlope(ref Vector3 deltaMovement)
+    private void HandleVerticalSlope(ref Vector2 deltaMovement)
     {
       var centerOfCollider = (this.raycastOrigins.BottomLeft.x + this.raycastOrigins.BottomRight.x) * 0.5f;
       var rayDirection = Vector2.down;

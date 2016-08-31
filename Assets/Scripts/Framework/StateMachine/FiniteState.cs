@@ -2,7 +2,6 @@
 
 namespace PachowStudios.Framework
 {
-  [UsedImplicitly(ImplicitUseKindFlags.InstantiatedNoFixedConstructorSignature)]
   public abstract class FiniteState<T>
     where T : class
   {

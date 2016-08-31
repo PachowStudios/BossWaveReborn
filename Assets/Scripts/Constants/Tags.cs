@@ -1,4 +1,4 @@
-﻿namespace PachowStudios.BossWave
+﻿namespace PachowStudios.BossWave.Constants
 {
   public static class Tags
   {

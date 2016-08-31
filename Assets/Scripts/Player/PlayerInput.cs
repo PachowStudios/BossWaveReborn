@@ -14,49 +14,24 @@ namespace PachowStudios.BossWave.Player
     public PlayerAction Run { get; }
     public PlayerAction Jump { get; }
 
-    private PlayerAction MoveLeft { get; }
-    private PlayerAction MoveRight { get; }
-
-    private PlayerAction AimLeft { get; }
-    private PlayerAction AimRight { get; }
-    private PlayerAction AimDown { get; }
-    private PlayerAction AimUp { get; }
-
     public PlayerInput()
     {
       Move = CreateOneAxisPlayerAction(
-        MoveLeft = CreatePlayerAction(nameof(MoveLeft)),
-        MoveRight = CreatePlayerAction(nameof(MoveRight)));
+        CreatePlayerAction("MoveLeft").WithDefault(Key.A),
+        CreatePlayerAction("MoveRight").WithDefault(Key.D));
 
       Aim = CreateTwoAxisPlayerAction(
-        AimLeft = CreatePlayerAction(nameof(AimLeft)),
-        AimRight = CreatePlayerAction(nameof(AimRight)),
-        AimDown = CreatePlayerAction(nameof(AimDown)),
-        AimUp = CreatePlayerAction(nameof(AimUp)));
+        CreatePlayerAction("AimLeft").WithDefault(Mouse.NegativeX),
+        CreatePlayerAction("AimRight").WithDefault(Mouse.PositiveX),
+        CreatePlayerAction("AimDown").WithDefault(Mouse.NegativeY),
+        CreatePlayerAction("AimUp").WithDefault(Mouse.PositiveY));
 
-      Shoot = CreatePlayerAction(nameof(Shoot));
-      ShootSecondary = CreatePlayerAction(nameof(ShootSecondary));
-      Run = CreatePlayerAction(nameof(Run));
-      Jump = CreatePlayerAction(nameof(Jump));
+      Shoot = CreatePlayerAction(nameof(Shoot)).WithDefault(Mouse.LeftButton);
+      ShootSecondary = CreatePlayerAction(nameof(ShootSecondary)).WithDefault(Mouse.RightButton);
+      Run = CreatePlayerAction(nameof(Run)).WithDefault(Key.LeftShift);
+      Jump = CreatePlayerAction(nameof(Jump)).WithDefault(Key.Space);
 
-      AssignDefaultBindings();
       ConfigureBindingListener();
-    }
-
-    private void AssignDefaultBindings()
-    {
-      MoveLeft.AddDefaultBinding(Key.A);
-      MoveRight.AddDefaultBinding(Key.D);
-
-      AimLeft.AddDefaultBinding(Mouse.NegativeX);
-      AimRight.AddDefaultBinding(Mouse.PositiveX);
-      AimDown.AddDefaultBinding(Mouse.NegativeY);
-      AimUp.AddDefaultBinding(Mouse.PositiveY);
-
-      Shoot.AddDefaultBinding(Mouse.LeftButton);
-      ShootSecondary.AddDefaultBinding(Mouse.RightButton);
-      Run.AddDefaultBinding(Key.LeftShift);
-      Jump.AddDefaultBinding(Key.Space);
     }
 
     private void ConfigureBindingListener()

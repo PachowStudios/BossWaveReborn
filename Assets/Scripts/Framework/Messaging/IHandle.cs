@@ -2,9 +2,9 @@
 
 namespace PachowStudios.Framework.Messaging
 {
-  public interface IHandles { }
+  public interface IHandle { }
 
-  public interface IHandles<in TMessage> : IHandles
+  public interface IHandle<in TMessage> : IHandle
     where TMessage : IMessage
   {
     void Handle([NotNull] TMessage message);

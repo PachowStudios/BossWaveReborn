@@ -217,7 +217,8 @@ namespace Zenject
             if (constructors.HasMoreThan(1))
             {
                 // This will return null if there is more than one constructor and none are marked with the [Inject] attribute
-                return (from c in constructors where c.HasAttribute<InjectAttribute>() select c).SingleOrDefault();
+                return constructors.SingleOrDefault(c => c.HasAttribute<InjectAttribute>())
+                       ?? constructors.SingleOrDefault(c => c.IsPublic);
             }
 
             return constructors[0];

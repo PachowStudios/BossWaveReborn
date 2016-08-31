@@ -1,6 +1,9 @@
+using JetBrains.Annotations;
+
 namespace Zenject
 {
     // We extract the interface so that monobehaviours can be installers
+    [UsedImplicitly(ImplicitUseKindFlags.InstantiatedNoFixedConstructorSignature)]
     public interface IInstaller
     {
         void InstallBindings();

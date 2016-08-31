@@ -152,7 +152,7 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1000010798161602}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -328,6 +328,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b88a48217a6edd344aa8fa3f8601a605, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  settings:
+    ExternalForces:
+      Gravity: -60
+      GroundDamping: 6
+      AirDamping: 4
+    AnimationHandler:
+      IdleActionInterval: {x: 3, y: 6}
+    MoveHandler:
+      WalkSpeed: 17
+      RunSpeed: 23
+      JumpHeight: 7.5
+    HitHandler:
+      KnockbackDelay: 1
 --- !u!114 &114000011230537438
 MonoBehaviour:
   m_ObjectHideFlags: 1
