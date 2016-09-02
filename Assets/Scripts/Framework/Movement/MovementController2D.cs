@@ -49,6 +49,7 @@ namespace PachowStudios.Framework.Movement
     [SerializeField, Range(0.001f, 0.3f)] private float skinWidth = 0.02f;
     [SerializeField] private LayerMask platformMask = 0;
     [SerializeField] private LayerMask oneWayPlatformMask = 0;
+    [SerializeField] private float stopThreshold = 0.001f;
     [SerializeField] private float jumpingThreshold = 0.07f;
     [SerializeField] private AnimationCurve slopeSpeedMultiplier = new AnimationCurve(new Keyframe(-90, 1.5f), new Keyframe(0, 1), new Keyframe(90, 0));
     [SerializeField, Range(0, 90f)] private float slopeLimit = 30f;
@@ -125,13 +126,19 @@ namespace PachowStudios.Framework.Movement
       if (ControllerCollided != null)
         this.raycastHitsThisFrame.ForEach(ControllerCollided);
 
+      if (deltaMovement.x.IsUnderThreshold(this.stopThreshold))
+        deltaMovement.x = 0f;
+
+      if (deltaMovement.y.IsUnderThreshold(this.stopThreshold))
+        deltaMovement.y = 0f;
+
       return deltaMovement;
     }
 
     private void RecalculateDistanceBetweenRays()
     {
       var colliderUseableHeight = (BoxCollider.size.y * Transform.localScale.y.Abs()) - (2f * this.skinWidth);
-      
+
       this.verticalDistanceBetweenRays = colliderUseableHeight / (this.totalHorizontalRays - 1);
 
       var colliderUseableWidth = (BoxCollider.size.x * Transform.localScale.x.Abs()) - (2f * this.skinWidth);

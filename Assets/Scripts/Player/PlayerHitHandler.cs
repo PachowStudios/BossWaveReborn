@@ -29,7 +29,7 @@ namespace PachowStudios.BossWave.Player
       if (Model.IsDead || force.IsZero())
         return;
 
-      force = force.Transform(x => (x.Square() * -ExternalForces.Gravity).Abs().SquareRoot());
+      force = force.Transform(x: x => (x.Square() * -ExternalForces.Gravity).Abs().SquareRoot());
 
       if (Model.IsGrounded)
         force = force.Transform(y: y => (y * -ExternalForces.Gravity).Abs().SquareRoot());

@@ -16,7 +16,7 @@ TagManager:
   - 
   - 
   - EditorOnly
-  - Ground
+  - Collider
   - Player
   - Enemies
   - 
@@ -43,9 +43,21 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
+  - name: Scenery
+    uniqueID: 3712257689
+    locked: 0
+  - name: Background
+    uniqueID: 970579757
+    locked: 0
+  - name: BehindPlayer
+    uniqueID: 74400077
+    locked: 0
   - name: Player
     uniqueID: 3954378547
     locked: 0
   - name: Guns
     uniqueID: 3790969875
+    locked: 0
+  - name: Foreground
+    uniqueID: 54523753
     locked: 0

@@ -292,6 +292,7 @@ MonoBehaviour:
   oneWayPlatformMask:
     serializedVersion: 2
     m_Bits: 0
+  stopThreshold: 0.01
   jumpingThreshold: 0.07
   slopeSpeedMultiplier:
     serializedVersion: 2
@@ -328,17 +329,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b88a48217a6edd344aa8fa3f8601a605, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  settings:
+  config:
     ExternalForces:
-      Gravity: -60
+      Gravity: -38
       GroundDamping: 6
       AirDamping: 4
     AnimationHandler:
       IdleActionInterval: {x: 3, y: 6}
     MoveHandler:
-      WalkSpeed: 17
-      RunSpeed: 23
-      JumpHeight: 7.5
+      WalkSpeed: 10.6
+      RunSpeed: 14.4
+      JumpHeight: 4.7
     HitHandler:
       KnockbackDelay: 1
 --- !u!114 &114000011230537438

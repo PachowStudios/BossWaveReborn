@@ -18,12 +18,12 @@ namespace UnityEngine
       => transform.TransformPoint(x, y, 0f);
 
     public static void Flip([NotNull] this Transform transform)
-      => transform.localScale = transform.localScale.Scale(x: -1f);
+      => transform.localScale = transform.localScale.Multiply(x: -1f);
 
     public static void FlipViaRotation([NotNull] this Transform transform)
     {
       transform.localRotation *= Quaternion.Euler(0f, 0f, 180f);
-      transform.localScale = transform.localScale.Scale(y: -1f);
+      transform.localScale = transform.localScale.Multiply(y: -1f);
     }
 
     /// <summary>

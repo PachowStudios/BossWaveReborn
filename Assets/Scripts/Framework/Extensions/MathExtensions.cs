@@ -1,19 +1,22 @@
-﻿using System;
-using JetBrains.Annotations;
+﻿using JetBrains.Annotations;
 
 namespace UnityEngine
 {
   public static class MathExtensions
   {
-    public const float FloatingPointTolerance = 0.0001f;
+    private const float FloatingPointTolerance = 0.0001f;
 
     [Pure]
     public static bool IsZero(this float value)
       => value.IsApproximately(0f);
 
     [Pure]
-    public static bool IsApproximately(this float value, float otherValue)
-      => Math.Abs(value - otherValue) < FloatingPointTolerance;
+    public static bool IsApproximately(this float value, float other)
+      => Mathf.Abs(value - other) < FloatingPointTolerance;
+
+    [Pure]
+    public static bool IsUnderThreshold(this float value, float threshold)
+      => value.Abs() < threshold;
 
     [Pure]
     public static int Sign(this float value)

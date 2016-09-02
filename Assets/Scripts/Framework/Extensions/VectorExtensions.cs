@@ -9,11 +9,11 @@ namespace UnityEngine
   {
     [Pure]
     public static Vector3 ToVector3(this Vector2 vector)
-      => vector.ToVector3(0f);
+      => new Vector3(vector.x, vector.y, 0f);
 
     [Pure]
-    public static Vector3 ToVector3(this Vector2 vector, float z)
-      => new Vector3(vector.x, vector.y, z);
+    public static Vector2 ToVector2(this Vector4 vector)
+      => vector;
 
     [Pure]
     public static Quaternion ToQuaternion(this Vector3 vector)
@@ -24,6 +24,14 @@ namespace UnityEngine
       => vector.x.IsZero() && vector.y.IsZero();
 
     [Pure]
+    public static bool IsZero(this Vector3 vector)
+      => ((Vector2)vector).IsZero() && vector.z.IsZero();
+
+    [Pure]
+    public static bool IsZero(this Vector4 vector)
+      => ((Vector3)vector).IsZero() && vector.w.IsZero();
+
+    [Pure]
     public static Vector2 Set(this Vector2 vector, float? x = null, float? y = null)
       => new Vector2(x ?? vector.x, y ?? vector.y);
 
@@ -32,20 +40,68 @@ namespace UnityEngine
       => new Vector3(x ?? vector.x, y ?? vector.y, z ?? vector.z);
 
     [Pure]
-    public static Vector2 Add(this Vector2 vector, float x = 0f, float y = 0f)
-      => new Vector2(vector.x + x, vector.y + y);
+    public static Vector2 Add(this Vector2 vector, float xy = 0f, float x = 0f, float y = 0f)
+      => vector.Add(new Vector2(x + xy, y + xy));
 
     [Pure]
-    public static Vector3 Add(this Vector3 vector, float x = 0f, float y = 0f, float z = 0f)
-      => new Vector3(vector.x + x, vector.y + y, vector.z + z);
+    public static Vector3 Add(this Vector3 vector, float xyz = 0f, float x = 0f, float y = 0f, float z = 0f)
+      => vector.Add(new Vector3(x + xyz, y + xyz, z + xyz));
 
     [Pure]
-    public static Vector2 Scale(this Vector2 vector, float x = 1f, float y = 1f)
-      => Vector2.Scale(vector, new Vector2(x, y));
+    public static Vector2 Add(this Vector2 a, Vector2 b)
+      => a + b;
 
     [Pure]
-    public static Vector3 Scale(this Vector3 vector, float x = 1f, float y = 1f, float z = 1f)
-      => Vector3.Scale(vector, new Vector3(x, y, z));
+    public static Vector3 Add(this Vector3 a, Vector3 b)
+      => a + b;
+
+    [Pure]
+    public static Vector2 Subtract(this Vector2 vector, float xy = 0f, float x = 0f, float y = 0f)
+      => vector.Subtract(new Vector2(x - xy, y - xy));
+
+    [Pure]
+    public static Vector3 Subtract(this Vector3 vector, float xyz = 0f, float x = 0f, float y = 0f, float z = 0f)
+      => vector.Subtract(new Vector3(x - xyz, y - xyz, z - xyz));
+
+    [Pure]
+    public static Vector2 Subtract(this Vector2 a, Vector2 b)
+      => a - b;
+
+    [Pure]
+    public static Vector3 Subtract(this Vector3 a, Vector3 b)
+      => a - b;
+
+    [Pure]
+    public static Vector2 Multiply(this Vector2 vector, float xy = 1f, float x = 1f, float y = 1f)
+      => vector.Multiply(new Vector2(x, y) / xy);
+
+    [Pure]
+    public static Vector3 Multiply(this Vector3 vector, float xyz = 1f, float x = 1f, float y = 1f, float z = 1f)
+      => vector.Multiply(new Vector3(x, y, z) / xyz);
+
+    [Pure]
+    public static Vector2 Multiply(this Vector2 a, Vector2 b)
+      => new Vector2(a.x * b.x, a.y * b.y);
+
+    [Pure]
+    public static Vector3 Multiply(this Vector3 a, Vector3 b)
+      => new Vector3(a.x * b.x, a.y * b.y, a.z * b.z);
+
+    [Pure]
+    public static Vector2 Divide(this Vector2 vector, float xy = 1f, float x = 1f, float y = 1f)
+      => vector.Divide(new Vector2(x, y) / xy);
+
+    [Pure]
+    public static Vector2 Divide(this Vector3 vector, float xyz = 1f, float x = 1f, float y = 1f, float z = 1f)
+      => vector.Divide(new Vector3(x, y, z) / xyz);
+
+    [Pure]
+    public static Vector2 Divide(this Vector2 a, Vector2 b)
+      => new Vector2(a.x / b.x, a.y / b.y);
+
+    [Pure]
+    public static Vector3 Divide(this Vector3 a, Vector3 b)
+      => new Vector3(a.x / b.x, a.y / b.y, a.z / b.z);
 
     [Pure]
     public static Vector2 Transform(
@@ -66,6 +122,31 @@ namespace UnityEngine
         x?.Invoke(vector.x) ?? vector.x,
         y?.Invoke(vector.y) ?? vector.y,
         z?.Invoke(vector.z) ?? vector.z);
+
+    [Pure]
+    public static Vector4 Transform(
+      this Vector4 vector,
+      [InstantHandle] Func<float, float> x = null,
+      [InstantHandle] Func<float, float> y = null,
+      [InstantHandle] Func<float, float> z = null,
+      [InstantHandle] Func<float, float> w = null)
+      => new Vector4(
+        x?.Invoke(vector.x) ?? vector.x,
+        y?.Invoke(vector.y) ?? vector.y,
+        z?.Invoke(vector.z) ?? vector.z,
+        z?.Invoke(vector.w) ?? vector.w);
+
+    [Pure]
+    public static Vector2 TransformAll(this Vector2 vector, [InstantHandle] Func<float, float> transform)
+      => vector.Transform(transform, transform);
+
+    [Pure]
+    public static Vector3 TransformAll(this Vector3 vector, [InstantHandle] Func<float, float> transform)
+      => vector.Transform(transform, transform, transform);
+
+    [Pure]
+    public static Vector4 TransformAll(this Vector4 vector, [InstantHandle] Func<float, float> transform)
+      => vector.Transform(transform, transform, transform, transform);
 
     [Pure]
     public static float DistanceTo(this Vector3 vector, Transform transform)

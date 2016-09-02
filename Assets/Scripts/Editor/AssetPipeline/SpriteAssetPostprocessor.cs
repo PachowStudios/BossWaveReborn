@@ -2,17 +2,17 @@
 using UnityEditor;
 using UnityEngine;
 
-namespace PachowStudios.BossWave.Editor
+namespace PachowStudios.BossWave.Editor.AssetPipeline
 {
   public class SpriteAssetPostprocessor : AssetPostprocessor
   {
     [UsedImplicitly]
-    private void OnPostprocessSprites(Texture2D texture, Sprite[] sprites)
+    private void OnPreprocessTexture()
     {
-      var importer = assetImporter as TextureImporter;
-
-      if (importer == null)
+      if (!assetPath.Contains("Sprites"))
         return;
+
+      var importer = (TextureImporter)assetImporter;
 
       importer.spritePixelsPerUnit = 16f;
       importer.filterMode = FilterMode.Point;

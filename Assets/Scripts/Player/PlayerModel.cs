@@ -31,18 +31,24 @@ namespace PachowStudios.BossWave.Player
     public bool IsRunning { get; set; }
 
     public Vector3 CenterPoint => MovementController.CenterPoint;
-    public bool IsWalking => !Velocity.x.IsZero();
+    public bool IsWalking => Input.Move;
     public bool IsFalling => Velocity.y < 0f;
     public bool IsGrounded => MovementController.IsGrounded;
     public bool IsIdle => Velocity.IsZero();
 
     public SpriteRenderer[] Renderers { get; }
 
+    private PlayerInput Input { get; }
     private MovementController2D MovementController { get; }
     private IEventAggregator EventAggregator { get; }
 
-    public PlayerModel(MovementController2D movementController, SpriteRenderer[] renderers, IEventAggregator eventAggregator)
+    public PlayerModel(
+      PlayerInput input,
+      MovementController2D movementController,
+      SpriteRenderer[] renderers,
+      IEventAggregator eventAggregator)
     {
+      Input = input;
       MovementController = movementController;
       Renderers = renderers;
       EventAggregator = eventAggregator;

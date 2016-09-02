@@ -44,7 +44,7 @@ namespace PachowStudios.BossWave.Player
 
       Model.Move(
         Velocity
-          .Transform(CalculateHorizontalVelocity)
+          .Transform(x: CalculateHorizontalVelocity)
           .Add(y: ExternalForces.Gravity * Time.deltaTime));
 
       if (Model.IsGrounded)
