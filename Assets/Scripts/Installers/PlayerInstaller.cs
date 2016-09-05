@@ -8,16 +8,18 @@ using Zenject;
 namespace PachowStudios.BossWave.Installers
 {
   [AddComponentMenu("Boss Wave/Installers/Player Installer")]
-  public class PlayerInstaller : MonoInstaller
+  public partial class PlayerInstaller : MonoInstaller
   {
-    [SerializeField] private PlayerFacade.Settings config = null;
+    [SerializeField] private Settings config = null;
 
+    private Transform transformComponent;
     private MovementController2D movementControllerComponent;
     private SpriteRenderer[] rendererComponents;
     private Animator animatorComponent;
 
     private IEventAggregator EventAggregator { get; set; }
 
+    private Transform Transform => this.GetComponentIfNull(ref this.transformComponent);
     private MovementController2D MovementController => this.GetComponentIfNull(ref this.movementControllerComponent);
     private SpriteRenderer[] Renderers => this.GetComponentsInChildrenIfNull(ref this.rendererComponents);
     private Animator Animator => this.GetComponentIfNull(ref this.animatorComponent);
@@ -29,6 +31,7 @@ namespace PachowStudios.BossWave.Installers
     public override void InstallBindings()
     {
       Container.Bind<PlayerModel>().AsSingle();
+      Container.BindInstance(Transform).WhenInjectedInto<PlayerModel>();
       Container.BindInstance(MovementController).WhenInjectedInto<PlayerModel>();
       Container.BindInstance(Renderers).WhenInjectedInto<PlayerModel>();
 
@@ -43,8 +46,13 @@ namespace PachowStudios.BossWave.Installers
       Container.BindAllInterfaces<PlayerMoveHandler>().To<PlayerMoveHandler>().AsSingle();
       Container.BindInstance(this.config.MoveHandler).WhenInjectedInto<PlayerMoveHandler>();
 
-      Container.BindAllInterfaces<PlayerHitHandler>().To<PlayerHitHandler>().AsSingle();
-      Container.BindInstance(this.config.HitHandler).WhenInjectedInto<PlayerHitHandler>();
+      Container.BindAllInterfaces<PlayerDirectionHandler>().To<PlayerDirectionHandler>().AsSingle();
+
+      Container.BindAllInterfaces<PlayerDamageHandler>().To<PlayerDamageHandler>().AsSingle();
+      Container.BindInstance(this.config.DamageHandler).WhenInjectedInto<PlayerDamageHandler>();
+
+      Container.BindAllInterfaces<PlayerGunSelector>().To<PlayerGunSelector>().AsSingle();
+      Container.BindInstance(this.config.GunSelector).WhenInjectedInto<PlayerGunSelector>();
 
       Container.BindInstance(this.config.ExternalForces);
 

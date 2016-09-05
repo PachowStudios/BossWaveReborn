@@ -4,11 +4,11 @@ namespace PachowStudios.BossWave.Entity
 {
   public class EntityJumpedMessage : IMessage { }
 
-  public class EntityHitMessage : IMessage
+  public class EntityDamagedMessage : IMessage
   {
     public IDamageSource Source { get; }
 
-    public EntityHitMessage(IDamageSource source)
+    public EntityDamagedMessage(IDamageSource source)
     {
       Source = source;
     }

@@ -11,6 +11,7 @@ namespace PachowStudios.BossWave.Player
   {
     private Settings Config { get; }
     private PlayerModel Model { get; }
+    private PlayerInput Input { get; }
     private IAnimationController AnimationController { get; }
 
     private Timer IdleActionTimer { get; }
@@ -18,14 +19,16 @@ namespace PachowStudios.BossWave.Player
     public PlayerAnimationHandler(
       Settings config,
       PlayerModel model,
+      PlayerInput input,
       IAnimationController animationController,
       IEventAggregator eventAggregator)
     {
       Config = config;
       Model = model;
+      Input = input;
       AnimationController = animationController
-        .Add("IsWalking", () => Model.IsWalking)
-        .Add("IsRunning", () => Model.IsRunning)
+        .Add("IsWalking", () => Input.IsWalking)
+        .Add("IsRunning", () => Input.IsRunning)
         .Add("IsFalling", () => Model.IsFalling)
         .Add("IsGrounded", () => Model.IsGrounded);
 

@@ -8,7 +8,7 @@ namespace PachowStudios.BossWave.Player
   public partial class PlayerMoveHandler : ILateTickable
   {
     private Settings Config { get; }
-    private PlayerExternalForceSettings ExternalForces { get; }
+    private ExternalForces ExternalForces { get; }
     private PlayerModel Model { get; }
     private PlayerInput Input { get; }
     private IEventAggregator EventAggregator { get; }
@@ -19,13 +19,13 @@ namespace PachowStudios.BossWave.Player
       set { Model.Velocity = value; }
     }
 
-    private bool CanJump => Input.Jump.WasPressed && Model.IsGrounded;
-    private float MoveSpeed => Model.IsRunning ? Config.RunSpeed : Config.WalkSpeed;
+    private bool Jumped => Input.Jumped && Model.IsGrounded;
+    private float MoveSpeed => Input.IsRunning ? Config.RunSpeed : Config.WalkSpeed;
     private float MovementDamping => Model.IsGrounded ? ExternalForces.GroundDamping : ExternalForces.AirDamping;
 
     public PlayerMoveHandler(
       Settings config,
-      PlayerExternalForceSettings externalForces,
+      ExternalForces externalForces,
       PlayerModel model,
       PlayerInput input,
       IEventAggregator eventAggregator)
@@ -39,7 +39,7 @@ namespace PachowStudios.BossWave.Player
 
     public void LateTick()
     {
-      if (CanJump)
+      if (Jumped)
         Jump();
 
       Model.Move(
@@ -61,7 +61,7 @@ namespace PachowStudios.BossWave.Player
       => Mathf.Sqrt(2f * Config.JumpHeight * -ExternalForces.Gravity);
 
     private float CalculateHorizontalVelocity(float x)
-      => x.LerpTo(Input.Move * MoveSpeed, MovementDamping * Time.deltaTime);
+      => x.LerpTo(Input.HorizontalMovement * MoveSpeed, MovementDamping * Time.deltaTime);
 
     private void OnPlayerGrounded()
     {

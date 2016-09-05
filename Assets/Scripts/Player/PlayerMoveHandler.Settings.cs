@@ -8,9 +8,9 @@ namespace PachowStudios.BossWave.Player
     [Serializable, InstallerSettings]
     public class Settings
     {
-      public float WalkSpeed = 17f;
-      public float RunSpeed = 23f;
-      public float JumpHeight = 7.5f;
+      public float WalkSpeed = 10.6f;
+      public float RunSpeed = 14.4f;
+      public float JumpHeight = 4.7f;
     }
   }
 }

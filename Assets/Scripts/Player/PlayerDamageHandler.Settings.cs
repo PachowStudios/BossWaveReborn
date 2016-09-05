@@ -3,7 +3,7 @@ using PachowStudios.Framework;
 
 namespace PachowStudios.BossWave.Player
 {
-  public partial class PlayerHitHandler
+  public partial class PlayerDamageHandler
   {
     [Serializable, InstallerSettings]
     public class Settings

@@ -40,7 +40,7 @@ namespace UnityEngine
 
     [Pure]
     public static float RoundToFraction(this float value, int denominator)
-      => Mathf.RoundToInt(value * denominator) / (float)denominator;
+      => Mathf.Round(value * denominator) / denominator;
 
     [Pure]
     public static int Clamp(this int value, int min, int max)

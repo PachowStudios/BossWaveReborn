@@ -1,4 +1,5 @@
-﻿using PachowStudios.Framework.Assertions;
+﻿using System.Collections.Generic;
+using PachowStudios.BossWave.Guns;
 using PachowStudios.Framework.Messaging;
 using PachowStudios.Framework.Movement;
 using UnityEngine;
@@ -18,37 +19,40 @@ namespace PachowStudios.BossWave.Player
     public int Health
     {
       get { return this.health; }
-      private set
+      set
       {
-        this.health = value.Clamp(0, Health);
+        this.health = value.Clamp(0, MaxHealth);
         RaiseHealthChanged();
       }
     }
 
+    public int MaxHealth { get; set; }
     public bool IsDead { get; set; }
     public Vector3 LastGroundedPosition { get; set; }
     public Vector2 Velocity { get; set; }
-    public bool IsRunning { get; set; }
+    public List<GunFacade> Guns { get; set; } = new List<GunFacade>();
+    public GunFacade CurrentGun { get; set; }
 
     public Vector3 CenterPoint => MovementController.CenterPoint;
-    public bool IsWalking => Input.Move;
+    public Vector2 LookDirection => Transform.localScale.Set(y: 0f);
+    public bool IsLookingRight => LookDirection.x > 0f;
     public bool IsFalling => Velocity.y < 0f;
     public bool IsGrounded => MovementController.IsGrounded;
     public bool IsIdle => Velocity.IsZero();
 
     public SpriteRenderer[] Renderers { get; }
 
-    private PlayerInput Input { get; }
+    private Transform Transform { get; }
     private MovementController2D MovementController { get; }
     private IEventAggregator EventAggregator { get; }
 
     public PlayerModel(
-      PlayerInput input,
+      Transform transform,
       MovementController2D movementController,
       SpriteRenderer[] renderers,
       IEventAggregator eventAggregator)
     {
-      Input = input;
+      Transform = transform;
       MovementController = movementController;
       Renderers = renderers;
       EventAggregator = eventAggregator;
@@ -57,12 +61,8 @@ namespace PachowStudios.BossWave.Player
     public void Move(Vector3 velocity)
       => Velocity = MovementController.Move(velocity);
 
-    public void TakeDamage(int damage)
-    {
-      damage.Should().BeGreaterThan(0, "because the player cannot take negative damage.");
-
-      Health -= damage;
-    }
+    public void Flip()
+      => Transform.Flip();
 
     private void RaiseHealthChanged()
       => EventAggregator.Publish(new PlayerHealthChangedMessage());

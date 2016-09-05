@@ -68,6 +68,12 @@ namespace UnityEngine
       where T : class
       => target ?? (target = gameObject.NullToRealNull()?.GetComponentsInChildren<T>());
 
+    public static void ParentTo([NotNull] this Component component, [NotNull] Transform transform)
+      => component.transform.parent = transform;
+
+    public static void Unparent([NotNull] this Component component)
+      => component.transform.parent = null;
+
     public static void Destroy([NotNull] this MonoBehaviour monoBehaviour)
       => monoBehaviour.gameObject.Destroy();
 

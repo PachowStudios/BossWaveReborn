@@ -5,36 +5,30 @@ namespace PachowStudios.BossWave.Editor.ContextMenus
 {
   public static class BoxCollider2DContextMenu
   {
-    private static GameObject Target => Selection.activeGameObject;
-
     private const string ResizeToSpriteBorderContextMenu = "CONTEXT/BoxCollider2D/Resize to sprite border";
+
+    private static GameObject Target => Selection.activeGameObject;
+    private static BoxCollider2D Collider => Target.GetComponent<BoxCollider2D>().NullToRealNull();
+    private static Sprite Sprite => Target.GetComponent<SpriteRenderer>().NullToRealNull()?.sprite;
 
     [MenuItem(ResizeToSpriteBorderContextMenu)]
     public static void ResizeToSpriteBorder()
     {
-      var collider = Target.GetComponent<BoxCollider2D>();
-      var sprite = Target.GetComponent<SpriteRenderer>().sprite;
-      var ppu = sprite.pixelsPerUnit;
-      var size = sprite.bounds.size;
-      var extents = sprite.border / ppu;
+      var size = Sprite.bounds.size;
+      var extents = Sprite.border / Sprite.pixelsPerUnit;
       var width = size.x - extents.x - extents.z;
       var height = size.y - extents.w - extents.y;
-      var anchor = sprite.pivot.Divide(size) / ppu;
+      var anchor = Sprite.pivot.Divide(size) / Sprite.pixelsPerUnit;
 
-      collider.size = new Vector2(width, height);
-      collider.offset = extents
+      Collider.size = new Vector2(width, height);
+      Collider.offset = extents
         .ToVector2()
-        .Add(collider.size / 2f)
+        .Add(Collider.size / 2f)
         .Subtract(anchor.Multiply(size));
     }
 
     [MenuItem(ResizeToSpriteBorderContextMenu, true)]
     public static bool ValidateResizeToSpriteBorder()
-    {
-      var collider = Target.GetComponent<BoxCollider2D>().NullToRealNull();
-      var sprite = Target.GetComponent<SpriteRenderer>().NullToRealNull()?.sprite;
-
-      return collider != null && sprite != null && !sprite.border.IsZero();
-    }
+      => Collider != null && Sprite != null && !Sprite.border.IsZero();
   }
 }

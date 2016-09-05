@@ -1,19 +1,20 @@
 ﻿using PachowStudios.BossWave.Entity;
+using PachowStudios.Framework.Assertions;
 using PachowStudios.Framework.Messaging;
 using PachowStudios.Framework.Primitives;
 using UnityEngine;
 
 namespace PachowStudios.BossWave.Player
 {
-  public partial class PlayerHitHandler : IHandle<EntityHitMessage>
+  public partial class PlayerDamageHandler : IHandle<EntityDamagedMessage>
   {
     private Settings Config { get; }
-    private PlayerExternalForceSettings ExternalForces { get; }
+    private ExternalForces ExternalForces { get; }
     private PlayerModel Model { get; }
 
-    public PlayerHitHandler(
+    public PlayerDamageHandler(
       Settings config,
-      PlayerExternalForceSettings externalForces,
+      ExternalForces externalForces,
       PlayerModel model,
       IEventAggregator eventAggregator)
     {
@@ -41,11 +42,13 @@ namespace PachowStudios.BossWave.Player
         Model.Move(Model.Velocity + force);
     }
 
-    public void Handle(EntityHitMessage message)
+    public void Handle(EntityDamagedMessage message)
     {
       var source = message.Source;
 
-      Model.TakeDamage(source.Damage);
+      source.Damage.Should().BeGreaterThan(0, "because the player cannot take negative damage.");
+
+      Model.Health -= source.Damage;
       Wait.ForSeconds(Config.KnockbackDelay, () => Knockback(source.Knockback, source.Position));
     }
   }
