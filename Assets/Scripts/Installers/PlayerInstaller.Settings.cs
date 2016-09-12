@@ -10,10 +10,12 @@ namespace PachowStudios.BossWave.Installers
     [Serializable, InstallerSettings]
     public class Settings
     {
+      public PlayerComponents Components;
       public ExternalForces ExternalForces;
       public PlayerAnimationHandler.Settings AnimationHandler;
       public PlayerMoveHandler.Settings MoveHandler;
       public PlayerDamageHandler.Settings DamageHandler;
+      public PlayerShootHandler.Settings ShootHandler;
       public PlayerGunSelector.Settings GunSelector;
     }
   }

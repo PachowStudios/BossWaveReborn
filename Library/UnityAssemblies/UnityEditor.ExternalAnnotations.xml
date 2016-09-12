@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<assembly name="UnityEditor">
+  <member name="T:UnityEditor.CustomEditor">
+    <attribute ctor="M:JetBrains.Annotations.MeansImplicitUseAttribute.#ctor(JetBrains.Annotations.ImplicitUseTargetFlags)">
+      <argument>2</argument>
+    </attribute>
+  </member>
+  <member name="T:UnityEditor.MenuItem">
+    <attribute ctor="M:JetBrains.Annotations.MeansImplicitUseAttribute.#ctor()"/>
+  </member>
+</assembly>

@@ -25,7 +25,7 @@ namespace PachowStudios.BossWave.Player
       eventAggregator.Subscribe(this);
     }
 
-    private void Knockback(Vector2 force, Vector3 source)
+    private void Knockback(Vector2 force, Vector2 source)
     {
       if (Model.IsDead || force.IsZero())
         return;

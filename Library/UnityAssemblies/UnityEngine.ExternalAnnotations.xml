@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<assembly name="UnityEngine">
+  <member name="T:UnityEngine.MonoBehaviour">
+    <attribute ctor="M:JetBrains.Annotations.UsedImplicitlyAttribute.#ctor(JetBrains.Annotations.ImplicitUseKindFlags)">
+      <argument>8</argument>
+    </attribute>
+  </member>
+  <member name="T:UnityEngine.SerializeField">
+    <attribute ctor="M:JetBrains.Annotations.MeansImplicitUseAttribute.#ctor(JetBrains.Annotations.ImplicitUseKindFlags)">
+      <argument>2</argument>
+    </attribute>
+  </member>
+  <member name="T:UnityEngine.CreateAssetMenuAttribute">
+    <attribute ctor="M:JetBrains.Annotations.MeansImplicitUseAttribute.#ctor(JetBrains.Annotations.ImplicitUseKindFlags,JetBrains.Annotations.ImplicitUseTargetFlags)">
+      <argument>2</argument>
+      <argument>2</argument>
+    </attribute>
+  </member>
+</assembly>

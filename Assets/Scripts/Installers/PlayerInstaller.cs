@@ -1,7 +1,6 @@
 ﻿using PachowStudios.BossWave.Player;
 using PachowStudios.Framework.Animation;
 using PachowStudios.Framework.Messaging;
-using PachowStudios.Framework.Movement;
 using UnityEngine;
 using Zenject;
 
@@ -12,17 +11,8 @@ namespace PachowStudios.BossWave.Installers
   {
     [SerializeField] private Settings config = null;
 
-    private Transform transformComponent;
-    private MovementController2D movementControllerComponent;
-    private SpriteRenderer[] rendererComponents;
-    private Animator animatorComponent;
-
     private IEventAggregator EventAggregator { get; set; }
 
-    private Transform Transform => this.GetComponentIfNull(ref this.transformComponent);
-    private MovementController2D MovementController => this.GetComponentIfNull(ref this.movementControllerComponent);
-    private SpriteRenderer[] Renderers => this.GetComponentsInChildrenIfNull(ref this.rendererComponents);
-    private Animator Animator => this.GetComponentIfNull(ref this.animatorComponent);
 
     [Inject]
     public void Construct(IEventAggregator eventAggregator)
@@ -31,14 +21,12 @@ namespace PachowStudios.BossWave.Installers
     public override void InstallBindings()
     {
       Container.Bind<PlayerModel>().AsSingle();
-      Container.BindInstance(Transform).WhenInjectedInto<PlayerModel>();
-      Container.BindInstance(MovementController).WhenInjectedInto<PlayerModel>();
-      Container.BindInstance(Renderers).WhenInjectedInto<PlayerModel>();
+      Container.BindInstance(this.config.Components).WhenInjectedInto<PlayerModel>();
 
       Container.Bind<PlayerInput>().AsSingle();
 
       Container.BindAllInterfaces<AnimationController>().To<AnimationController>().AsSingle();
-      Container.BindInstance(Animator).WhenInjectedInto<IAnimationController>();
+      Container.BindInstance(this.config.Components.Animator).WhenInjectedInto<IAnimationController>();
 
       Container.BindAllInterfaces<PlayerAnimationHandler>().To<PlayerAnimationHandler>().AsSingle();
       Container.BindInstance(this.config.AnimationHandler).WhenInjectedInto<PlayerAnimationHandler>();
@@ -50,6 +38,9 @@ namespace PachowStudios.BossWave.Installers
 
       Container.BindAllInterfaces<PlayerDamageHandler>().To<PlayerDamageHandler>().AsSingle();
       Container.BindInstance(this.config.DamageHandler).WhenInjectedInto<PlayerDamageHandler>();
+
+      Container.BindAllInterfaces<PlayerShootHandler>().To<PlayerShootHandler>().AsSingle();
+      Container.BindInstance(this.config.ShootHandler).WhenInjectedInto<PlayerShootHandler>();
 
       Container.BindAllInterfaces<PlayerGunSelector>().To<PlayerGunSelector>().AsSingle();
       Container.BindInstance(this.config.GunSelector).WhenInjectedInto<PlayerGunSelector>();

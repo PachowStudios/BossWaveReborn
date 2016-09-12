@@ -1,10 +1,12 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using PachowStudios.BossWave.Guns;
 using UnityEngine;
+using Zenject;
 
 namespace PachowStudios.BossWave.Player
 {
-  public partial class PlayerGunSelector
+  public partial class PlayerGunSelector : IInitializable
   {
     private Settings Config { get; }
     private PlayerModel Model { get; }
@@ -16,7 +18,6 @@ namespace PachowStudios.BossWave.Player
       set { Model.CurrentGun = value; }
     }
 
-    private Transform GunPoint => Config.GunPoint;
     private List<GunFacade> Guns => Model.Guns;
     private int CurrentGunIndex => Guns.IndexOf(CurrentGun);
 
@@ -25,22 +26,32 @@ namespace PachowStudios.BossWave.Player
       Config = config;
       Model = model;
       GunFactory = gunFactory;
+    }
 
+    public void Initialize()
+    {
       Config.StartingGuns.ForEach(AddGun);
+      SelectGun(Guns.First());
     }
 
     private void AddGun(GunType type)
     {
       var gun = GunFactory.Create(type);
 
-      gun.ParentTo(GunPoint);
+      gun.ParentTo(Model.GunPoint);
+      gun.transform.localPosition = Vector3.zero;
 
-      if (!Guns.IsFull())
+      if (Guns.Count == Config.Capacity)
       {
-        Guns.Add(gun);
+        ReplaceCurrentGun(gun);
         return;
       }
 
+      Guns.Add(gun);
+    }
+
+    private void ReplaceCurrentGun(GunFacade gun)
+    {
       Guns[CurrentGunIndex] = gun;
       CurrentGun.Destroy();
       SelectGun(gun);
@@ -48,8 +59,11 @@ namespace PachowStudios.BossWave.Player
 
     private void SelectGun(GunFacade gun)
     {
+      if (CurrentGun != null)
+        CurrentGun.IsActive = false;
+
       CurrentGun = gun;
-      gun.IsActive = true;
+      CurrentGun.IsActive = true;
     }
   }
 }

@@ -16,6 +16,8 @@ namespace PachowStudios.BossWave.Player
 
     private Timer IdleActionTimer { get; }
 
+    private Vector2 NormalizedAim => Model.CurrentGun.AimDirection.normalized;
+
     public PlayerAnimationHandler(
       Settings config,
       PlayerModel model,
@@ -30,7 +32,10 @@ namespace PachowStudios.BossWave.Player
         .Add("IsWalking", () => Input.IsWalking)
         .Add("IsRunning", () => Input.IsRunning)
         .Add("IsFalling", () => Model.IsFalling)
-        .Add("IsGrounded", () => Model.IsGrounded);
+        .Add("IsGrounded", () => Model.IsGrounded)
+        .Add("IsShooting", () => Model.CurrentGun.IsShooting)
+        .Add("AimX", () => NormalizedAim.x)
+        .Add("AimY", () => NormalizedAim.y);
 
       IdleActionTimer = new Timer(Config.IdleActionInterval.x, Config.IdleActionInterval.y, DoIdleAction);
 

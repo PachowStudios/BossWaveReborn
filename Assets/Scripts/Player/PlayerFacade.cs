@@ -11,8 +11,8 @@ namespace PachowStudios.BossWave.Player
   {
     public DamageSourceType AcceptedDamageSourceType => DamageSourceType.Enemy;
 
-    public Vector3 Position => Model.Position;
-    public Vector3 CenterPoint => Model.CenterPoint;
+    public Vector2 Position => Model.Position;
+    public Vector2 CenterPoint => Model.CenterPoint;
     public bool IsGrounded => Model.IsGrounded;
 
     private PlayerModel Model { get; set; }

@@ -11,8 +11,8 @@ namespace PachowStudios.BossWave.Player
     [Serializable, InstallerSettings]
     public class Settings
     {
-      public Transform GunPoint;
       public List<GunType> StartingGuns;
+      public int Capacity = 2;
     }
   }
 }

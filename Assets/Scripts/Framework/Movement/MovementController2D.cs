@@ -65,12 +65,6 @@ namespace PachowStudios.Framework.Movement
     private Transform transformComponent;
     private BoxCollider2D boxColliderComponent;
 
-    public Vector3 Position
-    {
-      get { return Transform.position; }
-      set { Transform.position = value; }
-    }
-
     public Vector3 CenterPoint => BoxCollider.bounds.center;
     public bool IsGrounded => this.collisionState.Below;
     public bool WasGroundedLastFrame => this.collisionState.WasGroundedLastFrame;

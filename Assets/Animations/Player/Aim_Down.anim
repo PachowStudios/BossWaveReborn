@@ -21,14 +21,14 @@ AnimationClip:
     - time: 0
       value: {fileID: 21300000, guid: afd55619da0b6d4469efe5348e37aebb, type: 3}
     attribute: m_Sprite
-    path: Separated/Body
+    path: Body/Separated/Body
     classID: 212
     script: {fileID: 0}
   - curve:
     - time: 0
       value: {fileID: 21300000, guid: 948d5896ada70ec489f75ef4a8916074, type: 3}
     attribute: m_Sprite
-    path: Separated/Arm
+    path: Body/Separated/Arm
     classID: 212
     script: {fileID: 0}
   m_SampleRate: 12

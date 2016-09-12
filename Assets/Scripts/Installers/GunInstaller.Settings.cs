@@ -9,6 +9,7 @@ namespace PachowStudios.BossWave.Installers
     [Serializable, InstallerSettings]
     public class Settings
     {
+      public GunComponents Components;
       public GunFacade.Settings Facade;
     }
   }

@@ -1,5 +1,4 @@
 ﻿using JetBrains.Annotations;
-using PachowStudios.Framework;
 
 namespace UnityEngine
 {
@@ -35,11 +34,5 @@ namespace UnityEngine
       transform.rotation = target.rotation;
       transform.localScale = target.localScale;
     }
-
-    /// <summary>
-    /// Determines if the rotation of a transform is between 90 and 270 degrees on the z-axis.
-    /// </summary>
-    public static bool IsFlippedOnZAxis([NotNull] this Transform transform)
-      => transform.localRotation.z.Abs() >= MathHelper.Cos45Deg;
   }
 }

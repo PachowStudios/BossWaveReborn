@@ -1,4 +1,5 @@
 ﻿using InControl;
+using UnityEngine;
 
 namespace PachowStudios.BossWave.Player
 {
@@ -10,6 +11,9 @@ namespace PachowStudios.BossWave.Player
     public bool IsWalking => Move.IsPressed;
     public bool IsRunning => IsWalking && Run.IsPressed;
     public bool Jumped => Jump.WasPressed;
+
+    public Vector2 AimTarget => Input.mousePosition;
+    public bool IsShooting => Shoot.IsPressed;
 
     private PlayerOneAxisAction Move { get; }
     private PlayerAction Run { get; }

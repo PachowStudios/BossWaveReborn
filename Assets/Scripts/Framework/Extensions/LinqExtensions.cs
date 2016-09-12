@@ -100,6 +100,10 @@ namespace System.Linq.Extensions
     public static IEnumerable<T> Shuffle<T>([NotNull] this IEnumerable<T> source)
       => source.OrderBy(x => Guid.NewGuid());
 
+    [NotNull, Pure]
+    public static string ToValuesString<T>([NotNull] this IEnumerable<T> source)
+      => string.Join(", ", source.Select(x => x.ToString()).ToArray());
+
     public static void Add<T>(
       [NotNull] this IList<T> source,
       [NotNull, InstantHandle] IEnumerable<T> items)

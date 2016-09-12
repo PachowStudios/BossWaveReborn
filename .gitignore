@@ -8,7 +8,9 @@
 /*.pidb
 /*.booproj
 
-[Ll]ibrary/
+Library/*
+Library/UnityAssemblies/*
+!Library/UnityAssemblies/*.ExternalAnnotations.xml
 [Tt]emp/
 
 ## Ignore Visual Studio temporary files, build results, and

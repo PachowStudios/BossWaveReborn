@@ -10,12 +10,6 @@ namespace PachowStudios.BossWave.Player
   {
     private int health;
 
-    public Vector3 Position
-    {
-      get { return MovementController.Position; }
-      set { MovementController.Position = value; }
-    }
-
     public int Health
     {
       get { return this.health; }
@@ -28,33 +22,30 @@ namespace PachowStudios.BossWave.Player
 
     public int MaxHealth { get; set; }
     public bool IsDead { get; set; }
-    public Vector3 LastGroundedPosition { get; set; }
+    public Vector2 LastGroundedPosition { get; set; }
     public Vector2 Velocity { get; set; }
-    public List<GunFacade> Guns { get; set; } = new List<GunFacade>();
     public GunFacade CurrentGun { get; set; }
 
-    public Vector3 CenterPoint => MovementController.CenterPoint;
+    public List<GunFacade> Guns { get; } = new List<GunFacade>();
+
+    public Transform GunPoint => Components.GunPoint;
+    public Vector2 Position => Transform.position;
+    public Vector2 CenterPoint => MovementController.CenterPoint;
     public Vector2 LookDirection => Transform.localScale.Set(y: 0f);
     public bool IsLookingRight => LookDirection.x > 0f;
     public bool IsFalling => Velocity.y < 0f;
     public bool IsGrounded => MovementController.IsGrounded;
     public bool IsIdle => Velocity.IsZero();
 
-    public SpriteRenderer[] Renderers { get; }
-
-    private Transform Transform { get; }
-    private MovementController2D MovementController { get; }
+    private PlayerComponents Components { get; }
     private IEventAggregator EventAggregator { get; }
 
-    public PlayerModel(
-      Transform transform,
-      MovementController2D movementController,
-      SpriteRenderer[] renderers,
-      IEventAggregator eventAggregator)
+    private Transform Transform => Components.Body;
+    private MovementController2D MovementController => Components.MovementController;
+
+    public PlayerModel(PlayerComponents components, IEventAggregator eventAggregator)
     {
-      Transform = transform;
-      MovementController = movementController;
-      Renderers = renderers;
+      Components = components;
       EventAggregator = eventAggregator;
     }
 

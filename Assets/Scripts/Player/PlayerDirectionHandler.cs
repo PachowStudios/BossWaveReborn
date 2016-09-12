@@ -1,4 +1,5 @@
-﻿using Zenject;
+﻿using PachowStudios.BossWave.Guns;
+using Zenject;
 
 namespace PachowStudios.BossWave.Player
 {
@@ -7,8 +8,12 @@ namespace PachowStudios.BossWave.Player
     private PlayerModel Model { get; }
     private PlayerInput Input { get; }
 
+    private GunFacade Gun => Model.CurrentGun;
+    private bool IsLookingRight => Model.IsLookingRight;
     private bool IsMovingRight => Input.HorizontalMovement > 0;
-    private bool IsLookingTowardsMovementDirection => !Input.IsWalking || IsMovingRight == Model.IsLookingRight;
+    private bool IsAimingRight => Gun.AimDirection.x > 0f;
+    private bool IsLookingTowardsMovementDirection => IsMovingRight == IsLookingRight;
+    private bool IsLookingTowardsAimDirection => IsAimingRight == IsLookingRight;
 
     public PlayerDirectionHandler(PlayerModel model, PlayerInput input)
     {
@@ -18,7 +23,12 @@ namespace PachowStudios.BossWave.Player
 
     public void LateTick()
     {
-      if (!IsLookingTowardsMovementDirection)
+      if (Gun.IsShooting)
+      {
+        if (!IsLookingTowardsAimDirection)
+          Model.Flip();
+      }
+      else if (Input.IsWalking && !IsLookingTowardsMovementDirection)
         Model.Flip();
     }
   }

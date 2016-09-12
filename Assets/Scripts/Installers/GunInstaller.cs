@@ -19,6 +19,10 @@ namespace PachowStudios.BossWave.Installers
     public override void InstallBindings()
     {
       Container.Bind<GunModel>().AsSingle();
+      Container.BindInstance(this.config.Components).WhenInjectedInto<GunModel>();
+
+      Container.BindAllInterfaces<GunRotationHandler>().To<GunRotationHandler>().AsSingle();
+      Container.BindAllInterfaces<GunActivatedHandler>().To<GunActivatedHandler>().AsSingle();
 
       Container.BindInstance(this.config.Facade).WhenInjectedInto<GunFacade>();
 

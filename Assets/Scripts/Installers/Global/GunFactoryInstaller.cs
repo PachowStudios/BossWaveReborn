@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Extensions;
 using PachowStudios.BossWave.Guns;
 using PachowStudios.Framework;
 using UnityEngine;
@@ -20,10 +21,32 @@ namespace PachowStudios.BossWave.Installers.Global
 
     [SerializeField] private List<GunPrefabMapping> guns = null;
 
+    private IDictionary<GunType, GunFacade> Guns { get; set; }
+
+    [Inject]
+    public void Construct()
+      => Guns = this.guns.ToDictionary(g => g.Type, g => g.Prefab);
+
     public override void InstallBindings()
-      => Container
+    {
+      Container
         .BindFactory<GunType, GunFacade, GunFactory>()
         .FromSubContainerResolve()
-        .ByPrefabLookup(this.guns.ToDictionary(g => g.Type, g => g.Prefab));
+        .ByPrefabLookup(Guns);
+
+      if (Container.IsValidating)
+        Validate();
+    }
+
+    private void Validate()
+    {
+      var missingMappings = EnumHelper
+        .GetValues<GunType>()
+        .Where(t => !Guns.ContainsKey(t) || Guns[t] == null)
+        .ToList();
+
+      if (missingMappings.Any())
+        throw new ZenjectException($"Guns are missing mappings: {missingMappings.ToValuesString()}");
+    }
   }
 }

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using JetBrains.Annotations;
+using PachowStudios.Framework;
 
 namespace UnityEngine
 {
@@ -207,6 +208,12 @@ namespace UnityEngine
       => Random.Range(parent.x, parent.y);
 
     /// <summary>
+    /// Determines if a rotation is between 90 and 270 degrees on the z-axis.
+    /// </summary>
+    public static bool IsFlippedOnZAxis(this Quaternion rotation)
+      => rotation.z.Abs() >= MathHelper.Cos45Deg;
+
+    /// <summary>
     /// Converts a movement vector to a rotation that faces the movement direction.
     /// </summary>
     /// <remarks>
@@ -216,7 +223,7 @@ namespace UnityEngine
     /// A movement vector of 1,-1,0 results in a 45deg rotation.
     /// </example>
     [Pure]
-    public static Quaternion DirectionToRotation2D(this Vector3 vector)
+    public static Quaternion DirectionToRotation2D(this Vector2 vector)
     {
       var angle = Mathf.Atan2(vector.y, vector.x) * Mathf.Rad2Deg;
 
