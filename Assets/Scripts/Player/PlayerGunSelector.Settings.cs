@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using PachowStudios.BossWave.Guns;
 using PachowStudios.Framework;
-using UnityEngine;
 
 namespace PachowStudios.BossWave.Player
 {
@@ -13,6 +12,7 @@ namespace PachowStudios.BossWave.Player
     {
       public List<GunType> StartingGuns;
       public int Capacity = 2;
+      public float SelectGunCooldown = 0.5f;
     }
   }
 }

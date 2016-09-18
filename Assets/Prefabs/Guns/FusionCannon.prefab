@@ -159,7 +159,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   config:
     Components:
-      Gun: {fileID: 4000012254579982}
+      Gun: {fileID: 4000013017101498}
       FirePoint: {fileID: 0}
       Renderer: {fileID: 212000013946107204}
       MuzzleFlashRenderer: {fileID: 212000013276970100}

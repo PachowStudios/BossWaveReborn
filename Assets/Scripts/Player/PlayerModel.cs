@@ -33,9 +33,8 @@ namespace PachowStudios.BossWave.Player
     public Vector2 CenterPoint => MovementController.CenterPoint;
     public Vector2 LookDirection => Transform.localScale.Set(y: 0f);
     public bool IsLookingRight => LookDirection.x > 0f;
-    public bool IsFalling => Velocity.y < 0f;
+    public bool IsFalling => !IsGrounded && Velocity.y < 0f;
     public bool IsGrounded => MovementController.IsGrounded;
-    public bool IsIdle => Velocity.IsZero();
 
     private PlayerComponents Components { get; }
     private IEventAggregator EventAggregator { get; }

@@ -54,11 +54,8 @@ namespace PachowStudios.Framework.Camera
 
     private void Awake()
     {
-      foreach (var baseBehavior in GetComponents<ICameraBehaviour>())
-        AddCameraBehavior(baseBehavior);
-
-      foreach (var finalizer in GetComponents<ICameraFinalizer>())
-        AddCameraFinalizer(finalizer);
+      GetComponents<ICameraBehaviour>().ForEach(AddBehavior);
+      GetComponents<ICameraFinalizer>().ForEach(AddFinalizer);
     }
 
     private void LateUpdate()
@@ -102,7 +99,7 @@ namespace PachowStudios.Framework.Camera
         var position = effector.GetDesiredPositionDelta(targetBounds, basePosition, targetAvgVelocity);
 
         totalWeight += weight;
-        accumulatedEffectorPosition += (weight * position);
+        accumulatedEffectorPosition += weight * position;
       }
 
       var desiredPosition = transform.position + accumulatedDeltaOffset;
@@ -188,33 +185,28 @@ namespace PachowStudios.Framework.Camera
         positionInFrontOfCamera + new Vector3(lineWidth, this.platformSnapVerticalOffset, 1f));
     }
 
-    public void AddCameraBehavior(ICameraBehaviour behaviour)
+    public void AddBehavior(ICameraBehaviour behaviour)
       => this.behaviours.Add(behaviour);
 
-    public void RemoveCameraBehavior<T>()
-      where T : ICameraBehaviour
-      => this.behaviours.RemoveAll(b => b is T);
+    public void RemoveBehavior(ICameraBehaviour behaviour)
+      => this.behaviours.Remove(behaviour);
 
-    public T GetCameraBehavior<T>()
-      where T : ICameraBehaviour
-      => (T)this.behaviours.FirstOrDefault(b => b is T);
+    public void AddEffector(ICameraEffector effector)
+      => this.effectors.Add(effector);
 
-    public void AddCameraEffector(ICameraEffector cameraEffector)
-      => this.effectors.Add(cameraEffector);
+    public void RemoveEffector(ICameraEffector effector)
+      => this.effectors.Remove(effector);
 
-    public void RemoveCameraEffector(ICameraEffector cameraEffector)
-      => this.effectors.RemoveAll(e => e == cameraEffector);
-
-    public void AddCameraFinalizer(ICameraFinalizer cameraFinalizer)
+    public void AddFinalizer(ICameraFinalizer finalizer)
     {
-      this.finalizers.Add(cameraFinalizer);
+      this.finalizers.Add(finalizer);
 
       if (this.finalizers.HasMultiple())
-        this.finalizers.Sort((first, second) => first.GetFinalizerPriority.CompareTo(second.GetFinalizerPriority));
+        this.finalizers.SortBy(f => f.GetFinalizerPriority);
     }
 
-    public void RemoveCameraFinalizer(ICameraFinalizer cameraFinalizer)
-      => this.finalizers.RemoveAll(f => f == cameraFinalizer);
+    public void RemoveFinalizer(ICameraFinalizer finalizer)
+      => this.finalizers.Remove(finalizer);
 
     private static Vector3 LerpTowards(Vector3 from, Vector3 to, float remainingFactorPerSecond)
       => Vector3.Lerp(from, to, 1f - Mathf.Pow(remainingFactorPerSecond, Time.deltaTime));

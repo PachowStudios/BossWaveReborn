@@ -16,7 +16,11 @@ namespace PachowStudios.Framework.Effects
     private ParticleSystem ParticleSystem => this.GetComponentIfNull(ref this.particleSystemComponent);
     private Renderer ParticleRenderer => ParticleSystem.GetComponentIfNull(ref this.particleRendererComponent);
 
-    [Inject] private ExplodeEffectSettings Config { get; set; }
+    private ExplodeEffect.Settings Config { get; set; }
+
+    [Inject]
+    public void Construct(ExplodeEffect.Settings config)
+      => Config = config;
 
     public void Explode([NotNull] Transform target, Vector3 velocity, [NotNull] Sprite sprite, Material material = null)
     {

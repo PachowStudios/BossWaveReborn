@@ -1,5 +1,7 @@
 ﻿using System.Collections.Generic;
 using JetBrains.Annotations;
+using UnityEngine;
+using UnityRandom = UnityEngine.Random;
 
 // Needs to be in a sub-namespace so we don't conflict with plugins that have the same extensions
 namespace System.Linq.Extensions
@@ -153,8 +155,12 @@ namespace System.Linq.Extensions
     }
 
     [CanBeNull, Pure]
+    public static T ElementAtWrap<T>([NotNull] this IList<T> list, int index)
+      => list[index.Wrap(0, list.Count - 1)];
+
+    [CanBeNull, Pure]
     public static T GetRandom<T>([NotNull] this IList<T> source)
-      => source[UnityEngine.Random.Range(0, source.Count)];
+      => source[UnityRandom.Range(0, source.Count)];
 
     [CanBeNull]
     public static T Pop<T>([NotNull] this IList<T> source)
@@ -166,6 +172,12 @@ namespace System.Linq.Extensions
 
       return lastItem;
     }
+
+    public static void SortBy<T, TKey>(
+      [NotNull] this List<T> list,
+      [NotNull, InstantHandle] Func<T, TKey> keySelector)
+      where TKey : IComparable<TKey>
+      => list.Sort((i1, i2) => keySelector(i1).CompareTo(keySelector(i2)));
 
     [NotNull]
     public static TValue GetOrAdd<TKey, TValue>(

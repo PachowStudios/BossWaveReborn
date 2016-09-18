@@ -18,8 +18,6 @@ namespace PachowStudios.Framework.Camera.Effectors
     [Tooltip("When true, an additional inner ring can be used to have it's own specific weight indpendent of the outer ring")]
     [SerializeField] protected bool onlyTriggerWhenGrounded = false;
 
-    [Inject] private CameraController CameraController { get; set; }
-
     protected Transform TrackedTarget { get; private set; }
 
     protected float EffectorWeight => this.effectorWeight;
@@ -28,8 +26,13 @@ namespace PachowStudios.Framework.Camera.Effectors
     protected bool AffectHorizontal => (this.axis & CameraAxis.Horizontal) == CameraAxis.Horizontal;
     protected bool AffectVertical => (this.axis & CameraAxis.Vertical) == CameraAxis.Vertical;
 
-    protected virtual void Awake()
+    private CameraController CameraController { get; set; }
+
+    [Inject]
+    private void Construct(CameraController cameraController)
     {
+      CameraController = cameraController;
+
       this.effectorTrigger.Should().NotBeNull("because a trigger is required to activate this effector");
       this.targetTag.Should().NotBeNull("because a tag is required to find a target");
     }
@@ -77,13 +80,13 @@ namespace PachowStudios.Framework.Camera.Effectors
     protected virtual void Activate(Transform newTransform)
     {
       TrackedTarget = newTransform;
-      CameraController.AddCameraEffector(this);
+      CameraController.AddEffector(this);
     }
 
     protected virtual void Deactivate()
     {
       TrackedTarget = null;
-      CameraController.RemoveCameraEffector(this);
+      CameraController.RemoveEffector(this);
     }
   }
 }

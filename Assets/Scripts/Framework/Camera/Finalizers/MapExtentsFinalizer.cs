@@ -17,11 +17,15 @@ namespace PachowStudios.Framework.Camera.Finalizers
     [SerializeField] private float rightConstraint = 0f;
     [SerializeField] private float leftConstraint = 0f;
 
-    [Inject] private CameraController CameraController { get; set; }
-
     public bool IsEnabled => enabled;
     public int GetFinalizerPriority => 0;
     public bool ShouldSkipSmoothingThisFrame => false;
+
+    private CameraController CameraController { get; set; }
+
+    [Inject]
+    public void Construct(CameraController cameraController)
+      => CameraController = cameraController;
 
     [Conditional("UNITY_EDITOR")]
     private void Update() { }

@@ -55,6 +55,20 @@ namespace UnityEngine
       => Mathf.Clamp01(value);
 
     [Pure]
+    public static int Wrap(this int value, int min, int max)
+    {
+      if (min <= value && value <= max)
+        return value;
+
+      min -= 1;
+      var range = max - min;
+
+      return value > max
+        ? min + ((value - max) % range)
+        : max - ((min - value) % range);
+    }
+
+    [Pure]
     public static float LerpTo(this float a, float b, float t)
       => Mathf.Lerp(a, b, t);
 

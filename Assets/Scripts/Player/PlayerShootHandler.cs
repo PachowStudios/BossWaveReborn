@@ -24,11 +24,7 @@ namespace PachowStudios.BossWave.Player
     public void Tick()
     {
       Gun.IsShooting = Input.IsShooting;
-
-      UpdateAimDirection();
+      Gun.AimDirection = WorldAimTarget - GunPosition;
     }
-
-    private void UpdateAimDirection()
-      => Gun.AimDirection = WorldAimTarget - GunPosition;
   }
 }

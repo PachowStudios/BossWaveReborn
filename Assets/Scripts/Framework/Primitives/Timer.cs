@@ -1,27 +1,36 @@
 ﻿using System;
-using Random = UnityEngine.Random;
+using JetBrains.Annotations;
+using UnityEngine;
+using UnityRandom = UnityEngine.Random;
 
 namespace PachowStudios.Framework.Primitives
 {
   public class Timer
   {
-    public float RemainingTime { get; private set; }
+    private float remainingTime;
+
+    public float RemainingTime
+    {
+      get { return this.remainingTime; }
+      private set { this.remainingTime = Mathf.Max(0f, value); }
+    }
+
     public float Interval { get; private set; }
 
     private float MinInterval { get; }
     private float MaxInterval { get; }
-    private Action Callback { get; }
+    private Action OnCompleted { get; }
 
-    public Timer(float interval, Action callback)
-      : this(interval, interval, callback) { }
+    public Timer(float interval, [NotNull] Action onCompleted)
+      : this(interval, interval, onCompleted) { }
 
-    public Timer(float minInterval, float maxInterval, Action callback)
+    public Timer(float minInterval, float maxInterval, [NotNull] Action onCompleted)
     {
       MinInterval = minInterval;
       MaxInterval = maxInterval;
-      Callback = callback;
+      OnCompleted = onCompleted;
 
-      Reset();
+      Restart();
     }
 
     public void Tick(float deltaTime)
@@ -30,12 +39,12 @@ namespace PachowStudios.Framework.Primitives
 
       if (RemainingTime <= 0f)
       {
-        Callback();
-        Reset();
+        OnCompleted();
+        Restart();
       }
     }
 
-    public void Reset()
-      => RemainingTime = Interval = Random.Range(MinInterval, MaxInterval);
+    public void Restart()
+      => RemainingTime = Interval = UnityRandom.Range(MinInterval, MaxInterval);
   }
 }

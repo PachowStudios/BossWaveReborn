@@ -13,9 +13,14 @@ namespace PachowStudios.BossWave.Player
     private PlayerModel Model { get; }
     private PlayerInput Input { get; }
     private IAnimationController AnimationController { get; }
-
     private Timer IdleActionTimer { get; }
 
+    private bool IsIdle => !IsWalking && IsGrounded && !IsShooting;
+    private bool IsWalking => Input.IsWalking;
+    private bool IsRunning => Input.IsRunning;
+    private bool IsFalling => Model.IsFalling;
+    private bool IsGrounded => Model.IsGrounded;
+    private bool IsShooting => Model.CurrentGun.IsShooting;
     private Vector2 NormalizedAim => Model.CurrentGun.AimDirection.normalized;
 
     public PlayerAnimationHandler(
@@ -29,11 +34,12 @@ namespace PachowStudios.BossWave.Player
       Model = model;
       Input = input;
       AnimationController = animationController
-        .Add("IsWalking", () => Input.IsWalking)
-        .Add("IsRunning", () => Input.IsRunning)
-        .Add("IsFalling", () => Model.IsFalling)
-        .Add("IsGrounded", () => Model.IsGrounded)
-        .Add("IsShooting", () => Model.CurrentGun.IsShooting)
+        .Add("IsIdle", () => IsIdle)
+        .Add("IsWalking", () => IsWalking)
+        .Add("IsRunning", () => IsRunning)
+        .Add("IsFalling", () => IsFalling)
+        .Add("IsGrounded", () => IsGrounded)
+        .Add("IsShooting", () => IsShooting)
         .Add("AimX", () => NormalizedAim.x)
         .Add("AimY", () => NormalizedAim.y);
 
@@ -44,7 +50,7 @@ namespace PachowStudios.BossWave.Player
 
     public void Tick()
     {
-      if (Model.IsIdle)
+      if (IsIdle)
         IdleActionTimer.Tick(Time.deltaTime);
     }
 

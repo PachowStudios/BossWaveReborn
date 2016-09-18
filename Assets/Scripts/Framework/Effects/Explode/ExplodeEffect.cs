@@ -4,12 +4,12 @@ using Zenject;
 
 namespace PachowStudios.Framework.Effects
 {
-  public class ExplodeEffect
+  public partial class ExplodeEffect
   {
-    private ExplodeEffectSettings Config { get; }
+    private Settings Config { get; }
     private IInstantiator Instantiator { get; }
 
-    public ExplodeEffect(ExplodeEffectSettings config, IInstantiator instantiator)
+    public ExplodeEffect(Settings config, IInstantiator instantiator)
     {
       Config = config;
       Instantiator = instantiator;
