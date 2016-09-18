@@ -100,7 +100,7 @@ Prefab:
     - target: {fileID: 114000010796356218, guid: 7163d4a71f283784685f02245d40ac8d,
         type: 2}
       propertyPath: config.GunSelector.StartingGuns.Array.size
-      value: 2
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4000010619408300, guid: 7163d4a71f283784685f02245d40ac8d, type: 2}
       propertyPath: m_LocalPosition.x

@@ -56,8 +56,6 @@ MonoBehaviour:
   guns:
   - Type: 0
     Prefab: {fileID: 114000010411107614, guid: 2a297fe98933dff47b30e57ad484cfc0, type: 2}
-  - Type: 1
-    Prefab: {fileID: 114000010411107614, guid: 18f9a30ad792ddf458ee47daae8d0ec6, type: 2}
 --- !u!114 &114000011737779640
 MonoBehaviour:
   m_ObjectHideFlags: 1

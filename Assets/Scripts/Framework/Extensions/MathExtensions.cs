@@ -63,6 +63,9 @@ namespace UnityEngine
       min -= 1;
       var range = max - min;
 
+      if (range <= 0)
+        return value;
+
       return value > max
         ? min + ((value - max) % range)
         : max - ((min - value) % range);

@@ -24,6 +24,8 @@ namespace PachowStudios.BossWave.Player
 
     private List<GunFacade> Guns => Model.Guns;
     private int CurrentGunIndex => Guns.IndexOf(CurrentGun);
+    private GunFacade PreviousGun => Guns.ElementAtWrap(CurrentGunIndex - 1);
+    private GunFacade NextGun => Guns.ElementAtWrap(CurrentGunIndex + 1);
 
     public PlayerGunSelector(Settings config, PlayerModel model, PlayerInput input, GunFactory gunFactory)
     {
@@ -45,15 +47,15 @@ namespace PachowStudios.BossWave.Player
       SelectGunCooldon.Tick(Time.deltaTime);
 
       if (SelectGunCooldon.IsExpired)
-        CheckInput();
+        CheckSelectGunInput();
     }
 
-    private void CheckInput()
+    private void CheckSelectGunInput()
     {
       if (Input.SelectPreviousGun)
-        SelectGun(Guns.ElementAtWrap(CurrentGunIndex - 1));
+        SelectGun(PreviousGun);
       else if (Input.SelectNextGun)
-        SelectGun(Guns.ElementAtWrap(CurrentGunIndex + 1));
+        SelectGun(NextGun);
     }
 
     private void AddGun(GunType type)
