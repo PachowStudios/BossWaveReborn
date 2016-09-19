@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using System.Linq.Extensions;
 using PachowStudios.BossWave.Guns;
 using PachowStudios.Framework.Primitives;
 using UnityEngine;
@@ -24,8 +23,6 @@ namespace PachowStudios.BossWave.Player
 
     private List<GunFacade> Guns => Model.Guns;
     private int CurrentGunIndex => Guns.IndexOf(CurrentGun);
-    private GunFacade PreviousGun => Guns.ElementAtWrap(CurrentGunIndex - 1);
-    private GunFacade NextGun => Guns.ElementAtWrap(CurrentGunIndex + 1);
 
     public PlayerGunSelector(Settings config, PlayerModel model, PlayerInput input, GunFactory gunFactory)
     {
@@ -53,9 +50,11 @@ namespace PachowStudios.BossWave.Player
     private void CheckSelectGunInput()
     {
       if (Input.SelectPreviousGun)
-        SelectGun(PreviousGun);
+        SelectGun(CurrentGunIndex - 1);
       else if (Input.SelectNextGun)
-        SelectGun(NextGun);
+        SelectGun(CurrentGunIndex + 1);
+      else if (Input.SelectGunIndex >= 0)
+        SelectGun(Input.SelectGunIndex);
     }
 
     private void AddGun(GunType type)
@@ -81,8 +80,14 @@ namespace PachowStudios.BossWave.Player
       SelectGun(gun);
     }
 
+    private void SelectGun(int index)
+      => SelectGun(Guns.ElementAtWrap(index));
+
     private void SelectGun(GunFacade gun)
     {
+      if (gun == CurrentGun)
+        return;
+
       if (CurrentGun != null)
         CurrentGun.IsActive = false;
 

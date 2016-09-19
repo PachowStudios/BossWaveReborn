@@ -3,7 +3,7 @@ using Zenject;
 
 namespace PachowStudios.BossWave.Guns
 {
-  public class GunActivatedHandler : ITickable
+  public class GunActivatedHandler : ILateTickable
   {
     private GunModel Model { get; }
 
@@ -12,7 +12,7 @@ namespace PachowStudios.BossWave.Guns
       Model = model;
     }
 
-    public void Tick()
+    public void LateTick()
     {
       if (Model.IsActive && Model.IsShooting)
         Show();

@@ -1,4 +1,5 @@
 ﻿using JetBrains.Annotations;
+using PachowStudios.Framework.Assertions;
 
 namespace UnityEngine
 {
@@ -57,18 +58,19 @@ namespace UnityEngine
     [Pure]
     public static int Wrap(this int value, int min, int max)
     {
+      max.Should().BeGreaterThan(min, "because the range cannot be inverted.");
+
       if (min <= value && value <= max)
         return value;
 
-      min -= 1;
-      var range = max - min;
+      if (min == max)
+        return min;
 
-      if (range <= 0)
-        return value;
+      var range = (max - min) + 1;
 
-      return value > max
-        ? min + ((value - max) % range)
-        : max - ((min - value) % range);
+      return value < min
+        ? max - ((min - value - 1) % range)
+        : min + ((value - max - 1) % range);
     }
 
     [Pure]

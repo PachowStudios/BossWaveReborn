@@ -13,7 +13,6 @@ namespace PachowStudios.BossWave.Installers
 
     private IEventAggregator EventAggregator { get; set; }
 
-
     [Inject]
     public void Construct(IEventAggregator eventAggregator)
       => EventAggregator = eventAggregator;

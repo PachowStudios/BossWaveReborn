@@ -374,8 +374,8 @@ MonoBehaviour:
     m_PostInfinity: 2
     m_RotationOrder: 4
   slopeLimit: 30
-  totalHorizontalRays: 8
-  totalVerticalRays: 4
+  horizontalRays: 8
+  verticalRays: 4
 --- !u!114 &114000010796356218
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -406,8 +406,9 @@ MonoBehaviour:
     DamageHandler:
       KnockbackDelay: 1
     GunSelector:
-      StartingGuns: 00000000
+      StartingGuns: 0000000001000000
       Capacity: 2
+      SelectGunCooldown: 0.3
 --- !u!114 &114000011230537438
 MonoBehaviour:
   m_ObjectHideFlags: 1

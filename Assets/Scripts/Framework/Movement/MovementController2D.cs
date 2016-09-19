@@ -41,8 +41,8 @@ namespace PachowStudios.Framework.Movement
     public event Action<RaycastHit2D> ControllerCollided;
 
     private const float FloatFudgeFactor = 0.000001f;
+    private const float SlopeLimitTangent = 3.73205f;
 
-    private readonly float slopeLimitTangent = Mathf.Tan(75f * Mathf.Deg2Rad);
     private readonly List<RaycastHit2D> raycastHitsThisFrame = new List<RaycastHit2D>(2);
     private readonly CollisionState collisionState = new CollisionState();
 
@@ -53,8 +53,8 @@ namespace PachowStudios.Framework.Movement
     [SerializeField] private float jumpingThreshold = 0.07f;
     [SerializeField] private AnimationCurve slopeSpeedMultiplier = new AnimationCurve(new Keyframe(-90, 1.5f), new Keyframe(0, 1), new Keyframe(90, 0));
     [SerializeField, Range(0, 90f)] private float slopeLimit = 30f;
-    [SerializeField, Range(2, 20)] private int totalHorizontalRays = 8;
-    [SerializeField, Range(2, 20)] private int totalVerticalRays = 4;
+    [SerializeField, Range(2, 20)] private int horizontalRays = 8;
+    [SerializeField, Range(2, 20)] private int verticalRays = 4;
 
     private RaycastOrigins raycastOrigins;
     private RaycastHit2D raycastHit;
@@ -79,10 +79,6 @@ namespace PachowStudios.Framework.Movement
       this.platformMask |= this.oneWayPlatformMask;
       RecalculateDistanceBetweenRays();
     }
-
-    [Conditional("DEBUG_CC2D_RAYS")]
-    private static void DrawRay(Vector3 start, Vector3 dir, Color color)
-      => Debug.DrawRay(start, dir, color);
 
     public Vector2 Move(Vector2 deltaMovement)
     {
@@ -129,15 +125,19 @@ namespace PachowStudios.Framework.Movement
       return deltaMovement;
     }
 
+    [Conditional("DEBUG_CC2D_RAYS")]
+    private static void DrawRay(Vector3 start, Vector3 direction, Color color)
+      => Debug.DrawRay(start, direction, color);
+
     private void RecalculateDistanceBetweenRays()
     {
-      var colliderUseableHeight = (BoxCollider.size.y * Transform.localScale.y.Abs()) - (2f * this.skinWidth);
+      var absScale = Transform.localScale.Abs();
+      var totalSkinWidth = 2f * this.skinWidth;
+      var useableHeight = (BoxCollider.size.y * absScale.y) - totalSkinWidth;
+      var useableWidth = (BoxCollider.size.x * absScale.x) - totalSkinWidth;
 
-      this.verticalDistanceBetweenRays = colliderUseableHeight / (this.totalHorizontalRays - 1);
-
-      var colliderUseableWidth = (BoxCollider.size.x * Transform.localScale.x.Abs()) - (2f * this.skinWidth);
-
-      this.horizontalDistanceBetweenRays = colliderUseableWidth / (this.totalVerticalRays - 1);
+      this.verticalDistanceBetweenRays = useableHeight / (this.horizontalRays - 1);
+      this.horizontalDistanceBetweenRays = useableWidth / (this.verticalRays - 1);
     }
 
     private void PrimeRaycastOrigins()
@@ -157,18 +157,17 @@ namespace PachowStudios.Framework.Movement
       var rayDirection = isGoingRight ? Vector2.right : Vector2.left;
       var initialRayOrigin = isGoingRight ? this.raycastOrigins.BottomRight : this.raycastOrigins.BottomLeft;
 
-      for (var i = 0; i < this.totalHorizontalRays; i++)
+      for (var i = 0; i < this.horizontalRays; i++)
       {
-        var ray = new Vector2(
-          initialRayOrigin.x,
-          initialRayOrigin.y + (i * this.verticalDistanceBetweenRays));
+        var ray = initialRayOrigin.Add(y: i * this.verticalDistanceBetweenRays);
 
         DrawRay(ray, rayDirection * rayDistance, Color.red);
 
-        if (i == 0 && this.collisionState.WasGroundedLastFrame)
-          this.raycastHit = Physics2D.Raycast(ray, rayDirection, rayDistance, PlatformMask);
-        else
-          this.raycastHit = Physics2D.Raycast(ray, rayDirection, rayDistance, PlatformMask & ~this.oneWayPlatformMask);
+        var mask = i == 0 && this.collisionState.WasGroundedLastFrame
+          ? (int)PlatformMask
+          : PlatformMask & ~this.oneWayPlatformMask;
+
+        this.raycastHit = Physics2D.Raycast(ray, rayDirection, rayDistance, mask);
 
         if (!this.raycastHit)
           continue;
@@ -237,7 +236,7 @@ namespace PachowStudios.Framework.Movement
       if (isGoingUp && !this.collisionState.WasGroundedLastFrame)
         mask &= ~this.oneWayPlatformMask;
 
-      for (var i = 0; i < this.totalVerticalRays; i++)
+      for (var i = 0; i < this.verticalRays; i++)
       {
         var ray = new Vector2(
           initialRayOrigin.x + (i * this.horizontalDistanceBetweenRays),
@@ -278,7 +277,7 @@ namespace PachowStudios.Framework.Movement
     {
       var centerOfCollider = (this.raycastOrigins.BottomLeft.x + this.raycastOrigins.BottomRight.x) * 0.5f;
       var rayDirection = Vector2.down;
-      var slopeCheckRayDistance = this.slopeLimitTangent * (this.raycastOrigins.BottomRight.x - centerOfCollider);
+      var slopeCheckRayDistance = SlopeLimitTangent * (this.raycastOrigins.BottomRight.x - centerOfCollider);
       var slopeRay = new Vector2(centerOfCollider, this.raycastOrigins.BottomLeft.y);
 
       DrawRay(slopeRay, rayDirection * slopeCheckRayDistance, Color.yellow);

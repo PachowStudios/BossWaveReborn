@@ -19,7 +19,7 @@ TagManager:
   - Collider
   - Player
   - Enemies
-  - 
+  - Projectiles
   - 
   - 
   - 
@@ -54,6 +54,9 @@ TagManager:
     locked: 0
   - name: Player
     uniqueID: 3954378547
+    locked: 0
+  - name: Projectiles
+    uniqueID: 2629286249
     locked: 0
   - name: Guns
     uniqueID: 3790969875

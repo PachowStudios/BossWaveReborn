@@ -1,4 +1,8 @@
-﻿using InControl;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Linq.Extensions;
+using InControl;
 using UnityEngine;
 
 namespace PachowStudios.BossWave.Player
@@ -17,6 +21,7 @@ namespace PachowStudios.BossWave.Player
     public bool IsShootingSecondary => ShootSecondary.IsPressed;
     public bool SelectPreviousGun => SelectGun.Value < 0f;
     public bool SelectNextGun => SelectGun.Value > 0f;
+    public int SelectGunIndex => SelectGunIndexes.IndexOfFirst(a => a.IsPressed);
 
     private PlayerOneAxisAction Move { get; }
     private PlayerAction Run { get; }
@@ -26,6 +31,7 @@ namespace PachowStudios.BossWave.Player
     private PlayerAction Shoot { get; }
     private PlayerAction ShootSecondary { get; }
     private PlayerOneAxisAction SelectGun { get; }
+    private IList<PlayerAction> SelectGunIndexes { get; }
 
     public PlayerInput()
     {
@@ -45,6 +51,11 @@ namespace PachowStudios.BossWave.Player
       SelectGun = CreateOneAxisPlayerAction(
         CreatePlayerAction($"{nameof(SelectGun)}Previous").WithDefault(Mouse.NegativeScrollWheel),
         CreatePlayerAction($"{nameof(SelectGun)}Next").WithDefault(Mouse.PositiveScrollWheel));
+      SelectGunIndexes = Enumerable
+        .Range((int)Key.Key1, Key.Key9 - Key.Key0)
+        .Cast<Key>()
+        .Select(k => CreatePlayerAction($"SelectGun{k.ToString().Tail(1)}").WithDefault(k))
+        .ToList();
 
       ConfigureBindingListener();
     }

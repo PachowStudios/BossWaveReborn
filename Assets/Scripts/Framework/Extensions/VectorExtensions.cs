@@ -33,12 +33,25 @@ namespace UnityEngine
       => ((Vector3)vector).IsZero() && vector.w.IsZero();
 
     [Pure]
-    public static Vector2 Set(this Vector2 vector, float? x = null, float? y = null)
-      => new Vector2(x ?? vector.x, y ?? vector.y);
+    public static Vector2 Abs(this Vector2 vector)
+      => vector.TransformAll(v => v.Abs());
 
     [Pure]
-    public static Vector3 Set(this Vector3 vector, float? x = null, float? y = null, float? z = null)
-      => new Vector3(x ?? vector.x, y ?? vector.y, z ?? vector.z);
+    public static Vector3 Abs(this Vector3 vector)
+      => vector.TransformAll(v => v.Abs());
+
+    [Pure]
+    public static Vector2 Set(this Vector2 vector, float? xyz = null, float? x = null, float? y = null)
+      => new Vector2(
+        x ?? xyz ?? vector.x,
+        y ?? xyz ?? vector.y);
+
+    [Pure]
+    public static Vector3 Set(this Vector3 vector, float? xyz = null, float? x = null, float? y = null, float? z = null)
+      => new Vector3(
+        x ?? xyz ?? vector.x,
+        y ?? xyz ?? vector.y,
+        z ?? xyz ?? vector.z);
 
     [Pure]
     public static Vector2 Add(this Vector2 vector, float xy = 0f, float x = 0f, float y = 0f)
@@ -229,7 +242,10 @@ namespace UnityEngine
 
       return Quaternion.AngleAxis(angle, Vector3.forward);
     }
+  }
 
+  public static class VectorEnumerableExtensions
+  {
     [Pure]
     public static Vector2 Sum([NotNull, InstantHandle] this IEnumerable<Vector2> vectors)
       => vectors.Aggregate(Vector2.zero, (c, v) => c + v);
