@@ -1,9 +1,9 @@
 ﻿using JetBrains.Annotations;
 
-namespace PachowStudios.BossWave.Guns
+namespace PachowStudios.BossWave.Projectiles
 {
   [UsedImplicitly(ImplicitUseTargetFlags.Members)]
-  public enum GunType
+  public enum ProjectileType
   {
     FusionCannon,
     CausticMagnum

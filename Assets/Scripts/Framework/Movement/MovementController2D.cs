@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 using UnityEngine;
 using Debug = UnityEngine.Debug;
 
@@ -38,17 +39,20 @@ namespace PachowStudios.Framework.Movement
       }
     }
 
-    public event Action<RaycastHit2D> ControllerCollided;
+    public event Action<RaycastHit2D> Collided;
+    public event Action<RaycastHit2D> Triggered;
 
     private const float FloatFudgeFactor = 0.000001f;
     private const float SlopeLimitTangent = 3.73205f;
 
-    private readonly List<RaycastHit2D> raycastHitsThisFrame = new List<RaycastHit2D>(2);
+    private readonly List<RaycastHit2D> raycastCollisionsThisFrame = new List<RaycastHit2D>(2);
+    private readonly List<RaycastHit2D> raycastTriggersThisFrame = new List<RaycastHit2D>(16);
     private readonly CollisionState collisionState = new CollisionState();
 
     [SerializeField, Range(0.001f, 0.3f)] private float skinWidth = 0.02f;
     [SerializeField] private LayerMask platformMask = 0;
     [SerializeField] private LayerMask oneWayPlatformMask = 0;
+    [SerializeField] private LayerMask triggerMask = 0;
     [SerializeField] private float stopThreshold = 0.001f;
     [SerializeField] private float jumpingThreshold = 0.07f;
     [SerializeField] private AnimationCurve slopeSpeedMultiplier = new AnimationCurve(new Keyframe(-90, 1.5f), new Keyframe(0, 1), new Keyframe(90, 0));
@@ -74,6 +78,8 @@ namespace PachowStudios.Framework.Movement
     private Transform Transform => this.GetComponentIfNull(ref this.transformComponent);
     private BoxCollider2D BoxCollider => this.GetComponentIfNull(ref this.boxColliderComponent);
 
+    private bool FireTriggerRaycasts => this.triggerMask != 0;
+
     private void Awake()
     {
       this.platformMask |= this.oneWayPlatformMask;
@@ -89,7 +95,8 @@ namespace PachowStudios.Framework.Movement
 
       this.collisionState.WasGroundedLastFrame = this.collisionState.Below;
       this.collisionState.Reset();
-      this.raycastHitsThisFrame.Clear();
+      this.raycastCollisionsThisFrame.Clear();
+      this.raycastTriggersThisFrame.Clear();
       this.isGoingUpSlope = false;
 
       PrimeRaycastOrigins();
@@ -113,8 +120,8 @@ namespace PachowStudios.Framework.Movement
       if (this.isGoingUpSlope)
         deltaMovement = deltaMovement.Set(y: 0f);
 
-      if (ControllerCollided != null)
-        this.raycastHitsThisFrame.ForEach(ControllerCollided);
+      if (Collided != null)
+        this.raycastCollisionsThisFrame.ForEach(Collided);
 
       if (deltaMovement.x.IsUnderThreshold(this.stopThreshold))
         deltaMovement.x = 0f;
@@ -156,29 +163,37 @@ namespace PachowStudios.Framework.Movement
       var rayDistance = deltaMovement.x.Abs() + this.skinWidth;
       var rayDirection = isGoingRight ? Vector2.right : Vector2.left;
       var initialRayOrigin = isGoingRight ? this.raycastOrigins.BottomRight : this.raycastOrigins.BottomLeft;
+      var raycastTriggers = FireTriggerRaycasts ? new RaycastHit2D[8] : null;
 
       for (var i = 0; i < this.horizontalRays; i++)
       {
-        var ray = initialRayOrigin.Add(y: i * this.verticalDistanceBetweenRays);
+        var rayOrigin = initialRayOrigin.Add(y: i * this.verticalDistanceBetweenRays);
 
-        DrawRay(ray, rayDirection * rayDistance, Color.red);
+        DrawRay(rayOrigin, rayDirection * rayDistance, Color.red);
 
-        var mask = i == 0 && this.collisionState.WasGroundedLastFrame
+        if (FireTriggerRaycasts && raycastTriggers != null)
+        {
+          var numTriggers = Physics2D.RaycastNonAlloc(rayOrigin, rayDirection, raycastTriggers, rayDistance, this.triggerMask);
+          this.raycastTriggersThisFrame.AddRange(raycastTriggers.Take(numTriggers));
+        }
+
+        var colliderMask = i == 0 && this.collisionState.WasGroundedLastFrame
           ? (int)PlatformMask
           : PlatformMask & ~this.oneWayPlatformMask;
 
-        this.raycastHit = Physics2D.Raycast(ray, rayDirection, rayDistance, mask);
+        this.raycastHit = Physics2D.Raycast(rayOrigin, rayDirection, rayDistance, colliderMask);
 
         if (!this.raycastHit)
           continue;
 
+        // The bottom ray can hit slopes but no other ray can so we have special handling for those cases
         if (i == 0 && HandleHorizontalSlope(ref deltaMovement, Vector2.Angle(this.raycastHit.normal, Vector2.up)))
         {
-          this.raycastHitsThisFrame.Add(this.raycastHit);
+          this.raycastCollisionsThisFrame.Add(this.raycastHit);
           break;
         }
 
-        deltaMovement.x = this.raycastHit.point.x - ray.x;
+        deltaMovement.x = this.raycastHit.point.x - rayOrigin.x;
         rayDistance = deltaMovement.x.Abs();
 
         if (isGoingRight)
@@ -192,7 +207,7 @@ namespace PachowStudios.Framework.Movement
           this.collisionState.Left = true;
         }
 
-        this.raycastHitsThisFrame.Add(this.raycastHit);
+        this.raycastCollisionsThisFrame.Add(this.raycastHit);
 
         if (rayDistance < this.skinWidth + 0.001f)
           break;
@@ -263,7 +278,7 @@ namespace PachowStudios.Framework.Movement
           this.collisionState.Below = true;
         }
 
-        this.raycastHitsThisFrame.Add(this.raycastHit);
+        this.raycastCollisionsThisFrame.Add(this.raycastHit);
 
         if (!isGoingUp && deltaMovement.y > 0.00001f)
           this.isGoingUpSlope = true;

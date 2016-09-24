@@ -1,9 +1,8 @@
 ﻿using UnityEngine;
-using Zenject;
 
 namespace PachowStudios.BossWave.Guns
 {
-  public class GunModel : IInitializable
+  public class GunModel
   {
     private bool isActive;
 
@@ -47,6 +46,7 @@ namespace PachowStudios.BossWave.Guns
     public Vector2 AimDirection { get; set; }
 
     private GunComponents Components { get; }
+
     private Transform Transform => Components.Gun;
     //private Transform FirePoint => Components.FirePoint;
     private SpriteRenderer Renderer => Components.Renderer;
@@ -56,8 +56,5 @@ namespace PachowStudios.BossWave.Guns
     {
       Components = components;
     }
-
-    public void Initialize()
-      => IsActive = false;
   }
 }
