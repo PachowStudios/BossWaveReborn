@@ -262,4 +262,5 @@ ModelManifest.xml
 ![Rr]oslyn/*.*
 
 Roslyn/desktop.ini
+compilation.log
 compilation log.txt
