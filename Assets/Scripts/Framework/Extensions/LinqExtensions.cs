@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using JetBrains.Annotations;
+using PachowStudios.Framework.Primitives;
 
 // Needs to be in a sub-namespace so we don't conflict with plugins that have the same extensions
 namespace System.Linq.Extensions
@@ -57,14 +58,20 @@ namespace System.Linq.Extensions
     }
 
     [NotNull, LinqTunnel]
-    public static IEnumerable<T> Do<T>([NotNull] this IEnumerable<T> source, [CanBeNull] Action<T> action)
+    public static IEnumerable<T> Do<T>([NotNull] this IEnumerable<T> source, [NotNull] Action<T> action)
     {
       foreach (var item in source)
       {
-        action?.Invoke(item);
+        action(item);
         yield return item;
       }
     }
+
+    [NotNull, LinqTunnel]
+    public static IEnumerable<TSource> DistinctBy<TSource, TKey>(
+      [NotNull] this IEnumerable<TSource> source,
+      [NotNull] Func<TSource, TKey> selector)
+      => new HashSet<TSource>(source, LambdaEqualityComparer<TSource>.Create(selector));
 
     [CanBeNull, Pure]
     public static TSource Lowest<TSource, TKey>(

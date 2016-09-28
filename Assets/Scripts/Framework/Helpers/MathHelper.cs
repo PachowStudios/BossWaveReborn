@@ -5,6 +5,8 @@ namespace PachowStudios.Framework
 {
   public static class MathHelper
   {
+    public const float FloatingPointTolerance = 0.0001f;
+
     /// <summary>
     /// Equivalent to <c>cos(45rad * (π / 180))</c>
     /// </summary>
