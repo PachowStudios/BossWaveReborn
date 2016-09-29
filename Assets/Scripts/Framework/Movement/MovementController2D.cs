@@ -10,7 +10,7 @@ using Debug = UnityEngine.Debug;
 
 namespace PachowStudios.Framework.Movement
 {
-  [AddComponentMenu("Pachow Studios/Character/Character Controller 2D")]
+  [AddComponentMenu("Pachow Studios/Movement/Movement Controller 2D")]
   [RequireComponent(typeof(BoxCollider2D), typeof(Rigidbody2D))]
   public partial class MovementController2D : MonoBehaviour
   {

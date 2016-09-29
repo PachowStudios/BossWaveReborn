@@ -7,10 +7,10 @@ using PachowStudios.Framework;
 using UnityEngine;
 using Zenject;
 
-namespace PachowStudios.BossWave.Installers.Global
+namespace PachowStudios.BossWave.Installers
 {
-  [AddComponentMenu("Boss Wave/Installers/Global/Projectile Factory Installer")]
-  public class ProjectileFactoryInstaller : MonoInstaller
+  [CreateAssetMenu(menuName = "Boss Wave/Installers/Projectile Prefab Installer")]
+  public class ProjectilePrefabInstaller : ScriptableObjectInstaller
   {
     [Serializable, InstallerSettings]
     public class ProjectilePrefabMapping

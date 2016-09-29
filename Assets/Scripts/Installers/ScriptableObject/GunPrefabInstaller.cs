@@ -7,10 +7,10 @@ using PachowStudios.Framework;
 using UnityEngine;
 using Zenject;
 
-namespace PachowStudios.BossWave.Installers.Global
+namespace PachowStudios.BossWave.Installers
 {
-  [AddComponentMenu("Boss Wave/Installers/Global/Gun Factory Installer")]
-  public class GunFactoryInstaller : MonoInstaller
+  [CreateAssetMenu(menuName = "Boss Wave/Installers/Gun Prefab Installer")]
+  public class GunPrefabInstaller : ScriptableObjectInstaller
   {
     [Serializable, InstallerSettings]
     public class GunPrefabMapping

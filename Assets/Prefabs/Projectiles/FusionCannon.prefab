@@ -23,6 +23,10 @@ GameObject:
   - 50: {fileID: 50000012636113280}
   - 61: {fileID: 61000014070580234}
   - 95: {fileID: 95000011172962972}
+  - 114: {fileID: 114000010380538028}
+  - 114: {fileID: 114000011264622646}
+  - 114: {fileID: 114000011149447890}
+  - 114: {fileID: 114000012588668046}
   m_Layer: 12
   m_Name: FusionCannon
   m_TagString: Untagged
@@ -91,6 +95,60 @@ Animator:
   m_WarningMessage: 
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
+--- !u!114 &114000010380538028
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1000012402757944}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 08eca9f7688a0a24685b89133b020c8e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _installers:
+  - {fileID: 114000011264622646}
+  _installerPrefabs: []
+  _scriptableObjectInstallers: []
+  _kernel: {fileID: 0}
+--- !u!114 &114000011149447890
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1000012402757944}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0166d8ff8d905b048b2448179e1f5d11, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _components:
+  - {fileID: 114000012588668046}
+  _identifier: 
+  _context: {fileID: 0}
+  _bindType: 0
+--- !u!114 &114000011264622646
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1000012402757944}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 05cbe73aa9c7be34fb0e67df3859c154, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &114000012588668046
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1000012402757944}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c011129e7b315c041af23a30ffc20eab, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!212 &212000010060017638
 SpriteRenderer:
   m_ObjectHideFlags: 1
