@@ -19,7 +19,6 @@ sysinfo.txt
 !CSharp60Support/*.*
 ![Rr]oslyn/*.*
 
-Roslyn/desktop.ini
 compilation.log
 compilation log.txt
 
@@ -52,4 +51,13 @@ _ReSharper*/
 **/packages/*
 
 # Windows
-[Tt]humbs.db
+# Windows image file caches
+Thumbs.db
+ehthumbs.db
+[Dd]esktop.ini
+$RECYCLE.BIN/
+*.cab
+*.msi
+*.msm
+*.msp
+*.lnk
