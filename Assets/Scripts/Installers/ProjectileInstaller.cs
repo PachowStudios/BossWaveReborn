@@ -9,9 +9,19 @@ namespace PachowStudios.BossWave.Installers
   {
     [SerializeField] private Settings config = null;
 
+    private Vector2 Direction { get; set; }
+
+    [Inject]
+    public void Construct(Vector2 direction)
+      => Direction = direction;
+
     public override void InstallBindings()
     {
       Container.Bind<ProjectileModel>().AsSingle();
+      Container.BindInstance(this.config.Components).WhenInjectedInto<ProjectileModel>();
+
+      Container.BindAllInterfaces<ProjectileMoveHandler>().To<ProjectileMoveHandler>();
+      Container.BindInstance(this.config.MoveHandler).WhenInjectedInto<ProjectileMoveHandler>();
     }
   }
 }

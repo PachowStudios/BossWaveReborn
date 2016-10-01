@@ -17,6 +17,18 @@ namespace Zenject
       [NotNull] this FactorySubContainerBinder<TKey, TPrefab> binder,
       IDictionary<TKey, TPrefab> prefabs)
       where TPrefab : UnityObject
-      => binder.ByMethod((c, key) => c.Bind<TPrefab>().FromPrefab(prefabs[key]));
+      => binder.ByMethod((c, k) => c.Bind<TPrefab>().FromPrefab(prefabs[k]));
+
+    [NotNull]
+    public static ConditionBinder ByPrefabLookup<TParam1, TKey, TPrefab>(
+      [NotNull] this FactorySubContainerBinder<TParam1, TKey, TPrefab> binder,
+      IDictionary<TKey, TPrefab> prefabs)
+      where TPrefab : UnityObject
+      => binder.ByMethod(
+        (c, p1, k) =>
+        {
+          c.Bind<TPrefab>().FromPrefab(prefabs[k]);
+          c.BindInstance(p1).WhenInjectedInto<TPrefab>();
+        });
   }
 }

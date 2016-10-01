@@ -12,7 +12,7 @@ namespace PachowStudios.Framework.Movement
 {
   [AddComponentMenu("Pachow Studios/Movement/Movement Controller 2D")]
   [RequireComponent(typeof(BoxCollider2D), typeof(Rigidbody2D))]
-  public partial class MovementController2D : MonoBehaviour
+  public partial class MovementController2D : MonoBehaviour, IRaycastSource
   {
     // We require a more precise floating point tolerance than normal.
     private const float FloatingPointTolerance = 0.000001f;

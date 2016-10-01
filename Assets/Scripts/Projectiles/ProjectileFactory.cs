@@ -1,6 +1,7 @@
-﻿using Zenject;
+﻿using UnityEngine;
+using Zenject;
 
 namespace PachowStudios.BossWave.Projectiles
 {
-  public class ProjectileFactory : Factory<ProjectileType, ProjectileFacade> { }
+  public class ProjectileFactory : Factory<Vector2, ProjectileType, ProjectileFacade> { }
 }

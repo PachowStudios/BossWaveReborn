@@ -1,4 +1,5 @@
 ﻿using System;
+using PachowStudios.BossWave.Projectiles;
 using PachowStudios.Framework;
 
 namespace PachowStudios.BossWave.Installers
@@ -8,7 +9,8 @@ namespace PachowStudios.BossWave.Installers
     [Serializable, InstallerSettings]
     public class Settings
     {
-      
+      public ProjectileComponents Components;
+      public ProjectileMoveHandler.Settings MoveHandler;
     }
   }
 }

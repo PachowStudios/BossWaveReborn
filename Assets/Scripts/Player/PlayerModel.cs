@@ -48,7 +48,7 @@ namespace PachowStudios.BossWave.Player
       EventAggregator = eventAggregator;
     }
 
-    public void Move(Vector3 velocity)
+    public void Move(Vector2 velocity)
       => Velocity = MovementController.Move(velocity);
 
     public void Flip()

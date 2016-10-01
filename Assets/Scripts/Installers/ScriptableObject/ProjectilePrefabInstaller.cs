@@ -30,7 +30,7 @@ namespace PachowStudios.BossWave.Installers
     public override void InstallBindings()
     {
       Container
-        .BindFactory<ProjectileType, ProjectileFacade, ProjectileFactory>()
+        .BindFactory<Vector2, ProjectileType, ProjectileFacade, ProjectileFactory>()
         .FromSubContainerResolve()
         .ByPrefabLookup(Projectiles);
 

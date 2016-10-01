@@ -9,8 +9,6 @@ namespace PachowStudios.BossWave.Player
   [AddComponentMenu("Boss Wave/Player/Player Facade")]
   public class PlayerFacade : MonoBehaviour, IGroundable, IDamageReceiver
   {
-    public DamageSourceType AcceptedDamageSourceType => DamageSourceType.Enemy;
-
     public Vector2 Position => Model.Position;
     public Vector2 CenterPoint => Model.CenterPoint;
     public bool IsGrounded => Model.IsGrounded;
